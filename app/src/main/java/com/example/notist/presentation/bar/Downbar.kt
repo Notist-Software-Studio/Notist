@@ -1,4 +1,4 @@
-package com.example.notist.bar
+package com.example.notist.presentation.bar
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -6,9 +6,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.sp
 import com.example.notist.R
 
