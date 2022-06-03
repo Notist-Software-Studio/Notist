@@ -1,86 +1,40 @@
 package com.example.notist.presentation.bar
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.notist.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.notist.navigation.NavRoutes
 
 @Composable
-fun bottomNavigation(modifier: Modifier = Modifier) {
+fun bottomNavigation(modifier: Modifier = Modifier, navController: NavController) {
+
+    val navItems = listOf(NavRoutes.Home, NavRoutes.Courses, NavRoutes.MyLibrary, NavRoutes.Shop, NavRoutes.Profile)
+
     BottomNavigation(
         backgroundColor = Color(0xFF5C6BC0),
         modifier = modifier
     ) {
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = null
-                )
-            },
-            label = { Text(stringResource(R.string.bottom_navigation_home),
-                color = Color.White,
-                fontSize = 11.sp) },
-            selected = true,
-            onClick = {}
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
 
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = null
-                )
-            },
-            label = { Text(stringResource(R.string.bottom_navigation_courses),
-                color = Color.White,
-                fontSize = 11.sp) },
-            selected = false,
-            onClick = {}
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = null
-                )
-            },
-            label = { Text(stringResource(R.string.bottom_navigation_myLibrary),
-                color = Color.White,
-                fontSize = 11.sp) },
-            selected = false,
-            onClick = {}
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = null
-                )
-            },
-            label = { Text(stringResource(R.string.bottom_navigation_shop),
-                color = Color.White,
-                fontSize = 11.sp) },
-            selected = false,
-            onClick = {}
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null
-                )
-            },
-            label = { Text(stringResource(R.string.bottom_navigation_profile),
-                color = Color.White,
-                fontSize = 11.sp) },
-            selected = false,
-            onClick = {}
-        )
+        navItems.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(painter = painterResource(id = item.icon), contentDescription = "", modifier = Modifier.size(20.dp)) },
+                label = { Text(text = stringResource(id = item.title), color = Color.White, fontSize = 8.sp) },
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color.White.copy(0.4f),
+                selected = currentRoute == item.route,
+                onClick = { navController.navigate(item.route) }
+            )
+        }
     }
 }

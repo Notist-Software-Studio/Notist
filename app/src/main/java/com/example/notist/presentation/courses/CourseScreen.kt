@@ -18,6 +18,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.notist.R
 import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
@@ -148,18 +149,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 }
 @Composable
 fun MyCourseApp(){
+
+    val navController = rememberNavController()
+
     NotistTheme {
         Scaffold(
             topBar = { upNavigation() },
-            bottomBar = { bottomNavigation() }
+            bottomBar = { bottomNavigation(navController = navController) }
         ) { padding ->
             HomeScreen(Modifier.padding(padding))
         }
     }
 }
-
-
-
 
 @Preview(showBackground = true)
 @Composable
