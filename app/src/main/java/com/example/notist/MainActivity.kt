@@ -14,6 +14,7 @@ import com.example.notist.navigation.NavRoutes
 import com.example.notist.ui.theme.NotistTheme
 import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
+import com.example.notist.presentation.courses.MyCourseApp
 import com.example.notist.presentation.screens.Home
 import com.example.notist.presentation.screens.Courses
 import com.example.notist.presentation.screens.Profile
@@ -21,6 +22,7 @@ import com.example.notist.presentation.screens.MyLibrary
 import com.example.notist.presentation.screens.Shop
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -50,7 +52,7 @@ fun NotistApp() {
                 startDestination = NavRoutes.Home.route
             ) {
                 composable(NavRoutes.Home.route) { Home() }
-                composable(NavRoutes.Courses.route) { Courses() }
+                composable(NavRoutes.Courses.route) { MyCourseApp() }
                 composable(NavRoutes.Profile.route) { Profile() }
                 composable(NavRoutes.MyLibrary.route) { MyLibrary() }
                 composable(NavRoutes.Shop.route) { Shop() }

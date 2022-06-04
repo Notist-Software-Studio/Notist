@@ -1,5 +1,6 @@
 package com.example.notist.presentation.courses
 
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,11 +10,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,34 +25,51 @@ import com.example.notist.R
 import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.ui.theme.NotistTheme
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
+val database = Firebase.database
+val myRef = database.getReference("message")
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     // Implement composable here
+    var className by remember { mutableStateOf("")}
+    val context = LocalContext.current
 
-    TextField(
-        value = "",
-        onValueChange = {},
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.surface
-        ),
-        placeholder = {
-            Text(stringResource(R.string.placeholder_search_for_courses))
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .clip(shape = RoundedCornerShape(10.dp))
-    )
+    Column() {
+        TextField(
+            value = className,
+            onValueChange = {className = it},
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = MaterialTheme.colors.surface
+            ),
+            placeholder = {
+                Text(stringResource(R.string.placeholder_search_for_courses))
+            },
+            modifier = modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .clip(shape = RoundedCornerShape(10.dp))
+        )
+        Button(
+            onClick = {
+                Toast.makeText(context, "$className",Toast.LENGTH_LONG).show()
+                myRef.setValue("Hello World")
+            },
+            content = {Text(text="Save")}
+        )
+    }
+
 }
+
 private data class StringPair(
     @StringRes val class_name: Int,
     @StringRes val major: Int
@@ -95,9 +114,7 @@ fun CourseBar(
                 start = 16.dp
             )
         )
-
     }
-
 }
 
 @Composable
@@ -154,8 +171,6 @@ fun MyCourseApp(){
 
     NotistTheme {
         Scaffold(
-            topBar = { upNavigation() },
-            bottomBar = { bottomNavigation(navController = navController) }
         ) { padding ->
             HomeScreen(Modifier.padding(padding))
         }

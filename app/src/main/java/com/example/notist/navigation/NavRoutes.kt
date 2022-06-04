@@ -11,9 +11,7 @@ sealed class NavRoutes(
     object Home: NavRoutes("home", R.string.bottom_navigation_home, R.drawable.home)
     object Courses: NavRoutes("courses", R.string.bottom_navigation_courses, R.drawable.course)
     object Profile: NavRoutes("profile", R.string.bottom_navigation_profile, R.drawable.shape)
-    object MyLibrary: NavRoutes("myLibrary",
-        R.string.bottom_navigation_myLibrary,
-        R.drawable.library
-    )
+    object MyLibrary: NavRoutes("myLibrary", R.string.bottom_navigation_myLibrary, R.drawable.library)
     object Shop: NavRoutes("shop", R.string.bottom_navigation_shop, R.drawable.shopping)
+
 }
