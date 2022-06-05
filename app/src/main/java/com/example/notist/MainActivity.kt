@@ -11,16 +11,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.notist.navigation.NavRoutes
+import com.example.notist.navigation.Routes
 import com.example.notist.ui.theme.NotistTheme
 import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
-import com.example.notist.presentation.courses.MyCourseApp
-import com.example.notist.presentation.screens.Home
-import com.example.notist.presentation.screens.Courses
-import com.example.notist.presentation.screens.Profile
-import com.example.notist.presentation.screens.MyLibrary
-import com.example.notist.presentation.screens.Shop
-
+import com.example.notist.presentation.login.LoginPage
+//import com.example.notist.presentation.courses.MyCourseApp
+//import com.example.notist.presentation.screens.Home
+//import com.example.notist.presentation.screens.Courses
+//import com.example.notist.presentation.screens.Profile
+//import com.example.notist.presentation.screens.MyLibrary
+//import com.example.notist.presentation.screens.Shop
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,18 +45,19 @@ fun NotistApp() {
 
     NotistTheme {
         Scaffold(
-            topBar = { upNavigation() },
-            bottomBar = { bottomNavigation(navController = navController) }
+            //topBar = { upNavigation() },
+            //bottomBar = { bottomNavigation(navController = navController) }
         ) { padding -> 20.dp
             NavHost(
                 navController = navController,
-                startDestination = NavRoutes.Home.route
+                startDestination = Routes.MainScreen.route
             ) {
-                composable(NavRoutes.Home.route) { Home() }
-                composable(NavRoutes.Courses.route) { MyCourseApp() }
-                composable(NavRoutes.Profile.route) { Profile() }
-                composable(NavRoutes.MyLibrary.route) { MyLibrary() }
-                composable(NavRoutes.Shop.route) { Shop() }
+                composable(Routes.MainScreen.route) { LoginPage() }
+//                composable(NavRoutes.Home.route) { Home() }
+//                composable(NavRoutes.Courses.route) { MyCourseApp() }
+//                composable(NavRoutes.Profile.route) { Profile() }
+//                composable(NavRoutes.MyLibrary.route) { MyLibrary() }
+//                composable(NavRoutes.Shop.route) { Shop() }
             }
         }
     }

@@ -15,3 +15,10 @@ sealed class NavRoutes(
     object Shop: NavRoutes("shop", R.string.bottom_navigation_shop, R.drawable.shopping)
 
 }
+sealed class Routes(val route: String) {
+    object StartPage : Routes("StartPage")
+    object SignUp : Routes("SignUp")
+    object ForgotPassword : Routes("ForgotPassword")
+    object Login : Routes("Login")
+    object MainScreen : Routes("MainScreen")
+}
