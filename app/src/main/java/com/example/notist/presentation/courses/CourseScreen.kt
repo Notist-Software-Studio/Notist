@@ -20,28 +20,26 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.example.notist.R
-import com.example.notist.presentation.bar.bottomNavigation
-import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.ui.theme.NotistTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 val database = Firebase.database
 val myRef = database.getReference("message")
+
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     // Implement composable here
-    var className by remember { mutableStateOf("")}
+    var className by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column() {
         TextField(
             value = className,
-            onValueChange = {className = it},
+            onValueChange = { className = it },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -61,53 +59,49 @@ fun SearchBar(
         )
         Button(
             onClick = {
-                Toast.makeText(context, "$className",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "$className", Toast.LENGTH_LONG).show()
                 myRef.setValue("Hello World")
             },
-            content = {Text(text="Save")}
+            content = { Text(text = "Save") }
         )
     }
 
 }
 
-private data class StringPair(
-    @StringRes val class_name: Int,
-    @StringRes val major: Int
+data class StringPair(
+    val class_name: String,
+    val major: String
 )
 
-private val alignYourBodyDataAll = listOf(
-    R.string.introduction_to_programming_1 to R.string.cs,
-    R.string.introduction_to_programming_2 to R.string.cs,
-    R.string.linear_algebra to R.string.eecs,
-    R.string.electronics to R.string.ee,
-    ).map { StringPair(it.first, it.second) }
-
-
-
-
+//private val alignYourBodyDataAll = mutableListOf(
+//    "Introduction to Programming 1" to "CS",
+//    "Introduction to Programming 2" to "CS",
+//    "Linear Algebra" to "EECS",
+//    "Electronics" to "EE",
+//    ).map { StringPair(it.first, it.second) }
 
 
 @Composable
 fun CourseBar(
-    @StringRes class_name: Int,
-    @StringRes major: Int,
+    class_name: String,
+    major: String,
     modifier: Modifier = Modifier,
-){
+) {
     Column(
         modifier = modifier
             .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
             .width(370.dp),
         horizontalAlignment = Alignment.Start
-    ){
+    ) {
         Text(
-            text = stringResource(class_name),
+            text = class_name,
             style = MaterialTheme.typography.h6,
             modifier = Modifier.padding(
                 start = 16.dp
             )
         )
         Text(
-            text = stringResource(major),
+            text = major,
             color = Color.White,
             style = MaterialTheme.typography.h6,
             modifier = Modifier.padding(
@@ -119,56 +113,64 @@ fun CourseBar(
 
 @Composable
 fun AlignCourseBar(
-    modifier: Modifier = Modifier
-){
+    modifier: Modifier = Modifier,
+    data: List<StringPair>
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .paddingFromBaseline(top = 16.dp, bottom = 16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        items(alignYourBodyDataAll){
-            item-> CourseBar(class_name = item.class_name, major = item.major)
+    ) {
+        items(data) { item ->
+            CourseBar(class_name = item.class_name, major = item.major)
         }
     }
 }
+
 @Composable
 fun HomeSection(
-    @StringRes title: Int,
+
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
-){
+) {
     Column(modifier) {
-        Text(
-            text = stringResource(title),
-            modifier = Modifier
-                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
-                .padding(horizontal = 16.dp)
-        )
+//        Text(
+//            modifier = Modifier
+//                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
+//                .padding(horizontal = 16.dp)
+//        )
         content()
     }
 }
 
 
-
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    val course = StringPair("Data Structures", "CS")
+    val data = remember { mutableStateListOf(course) }
     Column(
         modifier
             .padding(vertical = 16.dp)
     ) {
-       SearchBar(Modifier.padding(horizontal = 16.dp))
-        HomeSection(title = R.string.all) {
-            AlignCourseBar()
+        SearchBar(Modifier.padding(horizontal = 16.dp))
+        Box (modifier = Modifier.fillMaxSize()){
+            AlignCourseBar(data = data)
+            Button(modifier = Modifier
+                .padding(24.dp)
+                .align(Alignment.BottomCenter),
+                onClick = { data.add(StringPair("Data Structures", "CS"))}) {
+                Text(text = "Add More")
+            }
         }
+
+
     }
 }
+
 @Composable
-fun MyCourseApp(){
-
-    val navController = rememberNavController()
-
+fun MyCourseApp() {
     NotistTheme {
         Scaffold(
         ) { padding ->
@@ -180,15 +182,16 @@ fun MyCourseApp(){
 @Preview(showBackground = true)
 @Composable
 fun SearchBarPreview() {
-    NotistTheme { 
+    NotistTheme {
         SearchBar()
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun CourseBarPreview() {
     NotistTheme {
-        CourseBar(class_name= R.string.introduction_to_programming_1,major=R.string.cs)
+        CourseBar(class_name = "Introduction to Programming 1", major = "CS")
     }
 }
 
@@ -197,14 +200,14 @@ fun CourseBarPreview() {
 @Composable
 fun AlignCourseBarPreview() {
     NotistTheme {
-        AlignCourseBar()
+        AlignCourseBar(data = listOf())
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MyCoursePreview() {
-    NotistTheme {
-        MyCourseApp()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MyCoursePreview() {
+//    NotistTheme {
+//        MyCourseApp()
+//    }
+//}
