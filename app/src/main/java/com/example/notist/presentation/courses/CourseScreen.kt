@@ -1,8 +1,11 @@
 package com.example.notist.presentation.courses
 
+import android.net.Uri
+import android.provider.MediaStore.getDocumentUri
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,10 +23,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.notist.R
 import com.example.notist.ui.theme.NotistTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.pspdfkit.configuration.activity.PdfActivityConfiguration
+import com.pspdfkit.internal.views.document.DocumentView
+import com.pspdfkit.ui.PdfActivity
 
 val database = Firebase.database
 val myRef = database.getReference("message")
@@ -68,7 +76,7 @@ fun SearchBar(
 
 }
 
-data class StringPair(
+data class CourseStringPair(
     val class_name: String,
     val major: String
 )
@@ -85,12 +93,14 @@ data class StringPair(
 fun CourseBar(
     class_name: String,
     major: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+,navController: NavHostController
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
-            .width(370.dp),
+            .width(370.dp).clickable {navController.navigate("Teacher/$class_name") },
         horizontalAlignment = Alignment.Start
     ) {
         Text(
@@ -114,7 +124,8 @@ fun CourseBar(
 @Composable
 fun AlignCourseBar(
     modifier: Modifier = Modifier,
-    data: List<StringPair>
+    data: List<CourseStringPair>,
+    navController: NavHostController
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -124,90 +135,60 @@ fun AlignCourseBar(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(data) { item ->
-            CourseBar(class_name = item.class_name, major = item.major)
+            CourseBar(class_name = item.class_name, major = item.major,modifier=Modifier,navController)
         }
     }
 }
 
-@Composable
-fun HomeSection(
-
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Column(modifier) {
-//        Text(
-//            modifier = Modifier
-//                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
-//                .padding(horizontal = 16.dp)
-//        )
-        content()
-    }
-}
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    val course = StringPair("Data Structures", "CS")
+fun HomeScreen(modifier: Modifier = Modifier,navController: NavHostController) {
+    val course = CourseStringPair("Data Structures", "CS")
     val data = remember { mutableStateListOf(course) }
+    val context = LocalContext.current
     Column(
         modifier
             .padding(vertical = 16.dp)
     ) {
         SearchBar(Modifier.padding(horizontal = 16.dp))
         Box (modifier = Modifier.fillMaxSize()){
-            AlignCourseBar(data = data)
+            AlignCourseBar(modifier = Modifier,data = data, navController)
             Button(modifier = Modifier
                 .padding(24.dp)
                 .align(Alignment.BottomCenter),
-                onClick = { data.add(StringPair("Data Structures", "CS"))}) {
+                onClick = { data.add(CourseStringPair("Data Structures", "CS"))}) {
                 Text(text = "Add More")
             }
+
         }
-
-
+//        val uri = Uri.parse("file:///android_asset/my-document.pdf")
+//        val config = PdfActivityConfiguration.Builder(context).build()
+//        Surface {
+//            val documentUri = remember { getDocumentUri() }
+//            DocumentView(
+//                documentUri = uri,
+//                modifier = Modifier
+//                    .height(100.dp)
+//                    .padding(16.dp)
+//            )
+//        }
     }
 }
 
 @Composable
-fun MyCourseApp() {
+fun MyCourseApp(navController: NavHostController) {
     NotistTheme {
         Scaffold(
         ) { padding ->
-            HomeScreen(Modifier.padding(padding))
+            HomeScreen(Modifier.padding(padding),navController)
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SearchBarPreview() {
-    NotistTheme {
-        SearchBar()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CourseBarPreview() {
-    NotistTheme {
-        CourseBar(class_name = "Introduction to Programming 1", major = "CS")
-    }
-}
 
 
-@Preview(showBackground = true)
-@Composable
-fun AlignCourseBarPreview() {
-    NotistTheme {
-        AlignCourseBar(data = listOf())
-    }
-}
 
-//@Preview(showBackground = true)
-//@Composable
-//fun MyCoursePreview() {
-//    NotistTheme {
-//        MyCourseApp()
-//    }
-//}
+
+
+
