@@ -8,8 +8,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
-class CourseService {
-    suspend fun fetchCourses() : List<Course>? {
+interface ICourseService {
+    suspend fun fetchCourses() : List<Course>?
+}
+
+class CourseService : ICourseService {
+    override suspend fun fetchCourses() : List<Course>? {
         return withContext(Dispatchers.IO){
             val service = RetrofitClientInstance.retrofitInstance?.create(ICourseDao::class.java)
             //connect to server

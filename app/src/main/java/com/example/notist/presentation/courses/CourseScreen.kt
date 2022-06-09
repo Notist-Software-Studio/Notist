@@ -1,9 +1,6 @@
 package com.example.notist.presentation.courses
 
-import android.net.Uri
-import android.provider.MediaStore.getDocumentUri
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,23 +19,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.notist.MainViewModel
 import com.example.notist.R
 import com.example.notist.data.dto.Course
-import com.example.notist.navigation.Routes
 import com.example.notist.ui.theme.NotistTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.pspdfkit.configuration.activity.PdfActivityConfiguration
-import com.pspdfkit.internal.views.document.DocumentView
-import com.pspdfkit.ui.PdfActivity
 
 val database = Firebase.database
 val myRef = database.getReference("message")
@@ -147,22 +136,26 @@ fun AlignCourseBar(
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController,viewModel: MainViewModel) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: MainViewModel
+) {
     val courses by viewModel.courses.observeAsState(initial = emptyList())
-    var data = courses
+
 //    val course = Course(1,"Data Structures", "CS")
 //    val data = remember { mutableStateListOf(course) }
     val context = LocalContext.current
     val openAdd = remember { mutableStateOf(false) }
-    var class_name by remember { mutableStateOf("") }
-    var major by remember { mutableStateOf("") }
+    var inClassName by remember { mutableStateOf("") }
+    var inMajor by remember { mutableStateOf("") }
     Column(
         modifier
             .padding(vertical = 16.dp)
     ) {
         SearchBar(Modifier.padding(horizontal = 16.dp))
         Box(modifier = Modifier.fillMaxSize()) {
-            AlignCourseBar(modifier = Modifier, data = data, navController)
+            AlignCourseBar(modifier = Modifier, data = courses, navController)
             Button(modifier = Modifier
                 .padding(24.dp)
                 .align(Alignment.BottomCenter),
@@ -194,18 +187,18 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController,v
                                 modifier = Modifier
                                     .width(500.dp)
                                     .padding(25.dp),
-                                value = class_name,
-                                onValueChange = { class_name = it },
+                                value = inClassName,
+                                onValueChange = { inClassName = it },
                                 label = { Text("Input the class name") },
-                                placeholder = {Text("Same as school system, duplicate is invalid")}
-                                )
+                                placeholder = { Text("Same as school system, duplicate is invalid") }
+                            )
 
                             TextField(
                                 modifier = Modifier
                                     .width(500.dp)
                                     .padding(25.dp),
-                                value = major,
-                                onValueChange = { major = it },
+                                value = inMajor,
+                                onValueChange = { inMajor = it },
                                 label = { Text("Input the major name") })
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -214,13 +207,16 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController,v
                             ) {
                                 Button(
                                     onClick = {
-                                        courses.apply {
-                                            class_name = class_name
-                                            major = major
+//                                        data.add(Course(class_name = class_name,
+//                                                major = major))
+                                        var add_course = Course().apply {
+                                            class_name = inClassName
+                                            major = inMajor
                                         }
+                                        viewModel.save(add_course)
                                         Toast.makeText(
                                             context,
-                                            "$class_name $major",
+                                            "$inClassName $inMajor",
                                             Toast.LENGTH_LONG
                                         ).show()
                                         openAdd.value = false
@@ -246,11 +242,11 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController,v
 
 
 @Composable
-fun MyCourseApp(navController: NavHostController,viewModel: MainViewModel) {
+fun MyCourseApp(navController: NavHostController, viewModel: MainViewModel) {
     NotistTheme {
         Scaffold(
         ) { padding ->
-            HomeScreen(Modifier.padding(padding), navController,viewModel)
+            HomeScreen(Modifier.padding(padding), navController, viewModel)
         }
     }
 }
