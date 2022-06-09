@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,9 +24,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.notist.MainViewModel
 import com.example.notist.R
+import com.example.notist.data.dto.Course
+import com.example.notist.navigation.Routes
 import com.example.notist.ui.theme.NotistTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -65,13 +72,13 @@ fun SearchBar(
                 .heightIn(min = 56.dp)
                 .clip(shape = RoundedCornerShape(10.dp))
         )
-        Button(
-            onClick = {
-                Toast.makeText(context, "$className", Toast.LENGTH_LONG).show()
-                myRef.setValue("Hello World")
-            },
-            content = { Text(text = "Save") }
-        )
+//        Button(
+//            onClick = {
+//                Toast.makeText(context, "$className", Toast.LENGTH_LONG).show()
+//                myRef.setValue("Hello World")
+//            },
+//            content = { Text(text = "Save") }
+//        )
     }
 
 }
@@ -81,26 +88,19 @@ data class CourseStringPair(
     val major: String
 )
 
-//private val alignYourBodyDataAll = mutableListOf(
-//    "Introduction to Programming 1" to "CS",
-//    "Introduction to Programming 2" to "CS",
-//    "Linear Algebra" to "EECS",
-//    "Electronics" to "EE",
-//    ).map { StringPair(it.first, it.second) }
-
 
 @Composable
 fun CourseBar(
     class_name: String,
     major: String,
-    modifier: Modifier = Modifier
-,navController: NavHostController
+    modifier: Modifier = Modifier, navController: NavHostController
 ) {
     val context = LocalContext.current
     Column(
         modifier = modifier
             .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
-            .width(370.dp).clickable {navController.navigate("Teacher/$class_name") },
+            .width(370.dp)
+            .clickable { navController.navigate("Teacher/$class_name") },
         horizontalAlignment = Alignment.Start
     ) {
         Text(
@@ -124,64 +124,133 @@ fun CourseBar(
 @Composable
 fun AlignCourseBar(
     modifier: Modifier = Modifier,
-    data: List<CourseStringPair>,
+    data: List<Course>,
     navController: NavHostController
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
-            .paddingFromBaseline(top = 16.dp, bottom = 16.dp)
+            .paddingFromBaseline(top = 300.dp, bottom = 300.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(data) { item ->
-            CourseBar(class_name = item.class_name, major = item.major,modifier=Modifier,navController)
+            CourseBar(
+                class_name = item.class_name,
+                major = item.major,
+                modifier = Modifier,
+                navController
+            )
         }
     }
 }
 
 
-
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier,navController: NavHostController) {
-    val course = CourseStringPair("Data Structures", "CS")
-    val data = remember { mutableStateListOf(course) }
+fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController,viewModel: MainViewModel) {
+    val courses by viewModel.courses.observeAsState(initial = emptyList())
+    var data = courses
+//    val course = Course(1,"Data Structures", "CS")
+//    val data = remember { mutableStateListOf(course) }
     val context = LocalContext.current
+    val openAdd = remember { mutableStateOf(false) }
+    var class_name by remember { mutableStateOf("") }
+    var major by remember { mutableStateOf("") }
     Column(
         modifier
             .padding(vertical = 16.dp)
     ) {
         SearchBar(Modifier.padding(horizontal = 16.dp))
-        Box (modifier = Modifier.fillMaxSize()){
-            AlignCourseBar(modifier = Modifier,data = data, navController)
+        Box(modifier = Modifier.fillMaxSize()) {
+            AlignCourseBar(modifier = Modifier, data = data, navController)
             Button(modifier = Modifier
                 .padding(24.dp)
                 .align(Alignment.BottomCenter),
-                onClick = { data.add(CourseStringPair("Data Structures", "CS"))}) {
+                onClick = {
+//                    data.add(CourseStringPair("Data Structures", "CS"))
+                    openAdd.value = !openAdd.value
+                }) {
                 Text(text = "Add More")
             }
 
+            if (openAdd.value) {
+                Dialog(
+                    onDismissRequest = {
+                        openAdd.value = false
+                    }) {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(500.dp)
+                            .padding(20.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        color = Color(0xFFC0C8D7)
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            TextField(
+                                modifier = Modifier
+                                    .width(500.dp)
+                                    .padding(25.dp),
+                                value = class_name,
+                                onValueChange = { class_name = it },
+                                label = { Text("Input the class name") },
+                                placeholder = {Text("Same as school system, duplicate is invalid")}
+                                )
+
+                            TextField(
+                                modifier = Modifier
+                                    .width(500.dp)
+                                    .padding(25.dp),
+                                value = major,
+                                onValueChange = { major = it },
+                                label = { Text("Input the major name") })
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.Top,
+                                horizontalArrangement = Arrangement.SpaceAround
+                            ) {
+                                Button(
+                                    onClick = {
+                                        courses.apply {
+                                            class_name = class_name
+                                            major = major
+                                        }
+                                        Toast.makeText(
+                                            context,
+                                            "$class_name $major",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        openAdd.value = false
+                                    }) {
+                                    Text("Add Course")
+                                }
+                                Button(
+                                    onClick = {
+                                        openAdd.value = false
+                                    }) {
+                                    Text("Cancel")
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
-//        val uri = Uri.parse("file:///android_asset/my-document.pdf")
-//        val config = PdfActivityConfiguration.Builder(context).build()
-//        Surface {
-//            val documentUri = remember { getDocumentUri() }
-//            DocumentView(
-//                documentUri = uri,
-//                modifier = Modifier
-//                    .height(100.dp)
-//                    .padding(16.dp)
-//            )
-//        }
     }
 }
 
+
 @Composable
-fun MyCourseApp(navController: NavHostController) {
+fun MyCourseApp(navController: NavHostController,viewModel: MainViewModel) {
     NotistTheme {
         Scaffold(
         ) { padding ->
-            HomeScreen(Modifier.padding(padding),navController)
+            HomeScreen(Modifier.padding(padding), navController,viewModel)
         }
     }
 }

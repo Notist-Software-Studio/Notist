@@ -86,7 +86,7 @@ class CourseTest {
     private fun givenViewModelIsInitializedWithMockData() {
         val courses = ArrayList<Course>()
         courses.add(Course(class_name = "Logic Design", major = "EECS"))
-        val SoftwareStudio = Course("Software Studio","CS")
+        val SoftwareStudio = Course(class_name = "Logic Design", major = "EECS")
         courses.add(SoftwareStudio)
         coEvery { mockCourseService.fetchCourses()} returns courses
         //for everytime fetchCourses is called lets return courses

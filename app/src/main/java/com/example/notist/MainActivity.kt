@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.notist.presentation.courses.AlignCourseBar
 import com.example.notist.ui.theme.NotistTheme
 import com.example.notist.presentation.login.LoginPage
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,11 +19,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            viewModel.fetchCourses()
             //call the couroutines
-            val courses by viewModel.courses.observeAsState(initial = emptyList())
-            NotistApp()
-            var foo = courses
+    viewModel.fetchCourses()
+//            AlignCourseBar(data = foo, navController = rememberNavController())
+            NotistApp(viewModel)
         }
 
     }
@@ -30,14 +31,14 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun NotistApp() {
+fun NotistApp(viewModel: MainViewModel) {
     NotistTheme {
-        LoginPage()
+        LoginPage(viewModel)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    NotistApp()
+
 }

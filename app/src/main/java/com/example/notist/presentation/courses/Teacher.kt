@@ -39,6 +39,7 @@ fun Teacher( modifier: Modifier,class_name:String,navController: NavHostControll
     ) {
         SearchBar(Modifier.padding(horizontal = 16.dp))
         Box (modifier = Modifier.fillMaxSize()){
+            Text(text =class_name)
             AlignTeacherBar(modifier = Modifier,data = data, navController)
             Button(modifier = Modifier
                 .padding(24.dp)
@@ -79,7 +80,8 @@ fun TeacherBar(
     Column(
         modifier = modifier
             .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
-            .width(370.dp).clickable {navController.navigate("Files/$class_number") },
+            .width(370.dp)
+            .clickable { navController.navigate("Files/$class_number") },
         horizontalAlignment = Alignment.Start
     ) {
         Text(
