@@ -36,7 +36,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.notist.R
 import com.example.notist.navigation.NavRoutes
 //import com.example.login.Component.CustomTopAppBar
-import com.example.notist.presentation.bar.CustomTopAppBar2
 import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.upNavigation
 

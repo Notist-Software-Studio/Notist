@@ -38,10 +38,18 @@ import com.example.notist.presentation.screens.Shop
 fun LoginPage(viewModel: MainViewModel) {
 
     val navController = rememberNavController()
-    var showBar by rememberSaveable { mutableStateOf(true) }
+    var showTopBar by rememberSaveable { mutableStateOf(true) }
+    var showBotBar by rememberSaveable { mutableStateOf(true) }
     val context = LocalContext.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    showBar = when (navBackStackEntry?.destination?.route) {
+    showTopBar = when (navBackStackEntry?.destination?.route) {
+        "MainScreen" -> false
+        "StartPage" -> false
+        "SignUp" -> false
+        "Login" -> false
+        else -> true
+    }
+    showBotBar = when (navBackStackEntry?.destination?.route) {
         "MainScreen" -> false
         "StartPage" -> false
         "SignUp" -> false
@@ -50,12 +58,21 @@ fun LoginPage(viewModel: MainViewModel) {
     }
     Scaffold(
         topBar = {
-            if (showBar) {
-                upNavigation()
+            if (showTopBar) {
+                var current = ""
+                current = when (navBackStackEntry?.destination?.route) {
+                    "shop"-> "Shop"
+                    "myLibrary"-> "MyLibrary"
+                    "courses"-> "Courses"
+                    "profile"-> "Profile"
+                    "home"-> "Notist"
+                    else->""
+                }
+                upNavigation(section = current)
             }
         },
         bottomBar = {
-            if (showBar) {
+            if (showBotBar) {
                 bottomNavigation(navController = navController)
             }
         }
@@ -104,4 +121,5 @@ fun LoginPage(viewModel: MainViewModel) {
     }
 
     }
+
 

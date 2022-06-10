@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.notist.R
 import com.example.notist.navigation.NavRoutes
-import com.example.notist.presentation.bar.CustomTopAppBar
+import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.presentation.login.StartPage
 
 @Composable
@@ -37,7 +37,7 @@ fun MyLibrary(navController: NavHostController) {
 fun ScaffoldWithTopBarMyLibrary(navController: NavHostController) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(navController, "        MyLibrary", false)
+            upNavigation(section = "        MyLibrary")
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_action_library),

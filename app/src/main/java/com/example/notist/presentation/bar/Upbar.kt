@@ -16,64 +16,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun upNavigation(modifier: Modifier = Modifier) {
+fun upNavigation(modifier: Modifier = Modifier,section:String) {
     TopAppBar(
-        title = {Text("Notist")},
+        title = {Text(text = section)},
         backgroundColor = Color(0xFF5C6BC0),
         contentColor = Color.White
     )
 }
 
-@Composable
-fun CustomTopAppBar(navController: NavHostController, title: String, showBackIcon : Boolean) {
-    TopAppBar(
-        backgroundColor = Color(0xFF5C6BC0),
-        title = {
-            Text(text = title,color = Color.White,fontWeight = FontWeight.Bold,fontSize = 20.sp)
-        },
-        navigationIcon = if (showBackIcon && navController.previousBackStackEntry != null) {
-            {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        tint = Color.White,
-                        contentDescription = "Back"
-                    )
-                }
-            }
-        } else {
-            null
-        }
-    )
-}
-@Composable
-fun CustomTopAppBar2(navController: NavHostController, title: String, showBackIcon : Boolean) {
-    TopAppBar(
-        backgroundColor = Color(0xc4ccd4ff),
-        title = {
-            Text(text = title,color = Color.White)
-        },
-        navigationIcon = if (showBackIcon && navController.previousBackStackEntry != null) {
-            {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        tint = Color.White,
-                        contentDescription = "Back"
-                    )
-                }
-            }
-        } else {
-            null
-        }
-    )
-}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview2() {
-    val navController = rememberNavController()
-    CustomTopAppBar(navController = navController,"Notist",true)
-    //Spacer(modifier = Modifier.height(20.dp))
-    CustomTopAppBar2(navController = navController," ",true)
+   upNavigation(section = "Notist")
 }
 

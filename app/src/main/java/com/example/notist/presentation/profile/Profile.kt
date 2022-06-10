@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.notist.R
 import com.example.notist.navigation.Routes
-import com.example.notist.presentation.bar.CustomTopAppBar
+import com.example.notist.presentation.bar.upNavigation
 
 @Composable
 fun Profile(navController: NavHostController) {
@@ -63,7 +63,7 @@ fun myreferral(shape: Shape){
 fun ScaffoldWithTopBarProfile(navController: NavHostController) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(navController, "        Profile", false)
+            upNavigation(section ="        Profile")
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_action_name),
@@ -86,8 +86,8 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                         .height(35.dp)
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xB8E4E6E7),
-                        contentColor = Color.Black
+                        backgroundColor = Color(0xFFE4E6E7),
+
                     )
 
                     //.padding(vertical = 12.dp, horizontal = 20.dp)
@@ -183,8 +183,8 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                         .height(35.dp)
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xB8F1B31C),
-                        contentColor = Color.Black
+                        backgroundColor = Color(0xFFEBD594),
+
                     )
 
                     //.padding(vertical = 12.dp, horizontal = 20.dp)
@@ -254,8 +254,8 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                         .height(35.dp)
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xB8F1B31C),
-                        contentColor = Color.Black
+                        backgroundColor = Color(0xFFEBD594),
+
                     )
 
                     //.padding(vertical = 12.dp, horizontal = 20.dp)
@@ -294,7 +294,6 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xFFC0C8D7),
-                        contentColor = Color.Black
                     )
 
                     //.padding(vertical = 12.dp, horizontal = 20.dp)

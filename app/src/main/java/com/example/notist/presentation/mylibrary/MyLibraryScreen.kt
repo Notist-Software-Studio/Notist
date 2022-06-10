@@ -4,13 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.notist.navigation.NavRoutes
 import com.example.notist.navigation.Routes
 
 @Composable
 fun MyLibraryScreen(){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.MyLibrary.route) {
+    NavHost(navController = navController, startDestination = NavRoutes.MyLibrary.route) {
 
 //        composable(Routes.MyLibrary.route) {
 //            MyLibrary(navController = navController)

@@ -65,7 +65,7 @@ fun profilesettings(isDialogOpen: MutableState<Boolean>) {
                                 contentDescription = "Localized description",
                                 modifier = Modifier
                                     .size(60.dp, 30.dp),
-                                tint = Color(0xB8000000)
+                                tint = Color(0xFF9B9B9B)
                             )
 
                         }
@@ -86,7 +86,7 @@ fun profilesettings(isDialogOpen: MutableState<Boolean>) {
 
                         FloatingActionButton(
                             modifier = Modifier.padding(90.dp,0.dp,0.dp,0.dp),
-                            backgroundColor = Color(0xB85C6BC0),
+                            backgroundColor = Color(0xFF5C6BC0),
                             onClick = {
 
                             }) {
@@ -172,7 +172,7 @@ fun profilesettings(isDialogOpen: MutableState<Boolean>) {
                             .padding(10.dp),
                         shape = RoundedCornerShape(30.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xB85C6BC0)
+                            backgroundColor = Color(0xFF5C6BC0)
                         )
                     ) {
                         Text(
