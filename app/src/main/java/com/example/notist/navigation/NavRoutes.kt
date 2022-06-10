@@ -13,6 +13,9 @@ sealed class NavRoutes(
     object Profile: NavRoutes("profile", R.string.bottom_navigation_profile, R.drawable.shape)
     object MyLibrary: NavRoutes("myLibrary", R.string.bottom_navigation_myLibrary, R.drawable.library)
     object Shop: NavRoutes("shop", R.string.bottom_navigation_shop, R.drawable.shopping)
+    object Test: NavRoutes("test", R.string.test1, R.drawable.course )
+    object Test1: NavRoutes("test1", R.string.test2, R.drawable.course )
+    object Test2: NavRoutes("test2", R.string.test, R.drawable.course )
 }
 sealed class Routes(val route: String) {
     object StartPage : Routes("StartPage")

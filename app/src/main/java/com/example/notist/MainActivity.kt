@@ -3,6 +3,7 @@ package com.example.notist
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,13 +17,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     private val viewModel : MainViewModel by viewModel<MainViewModel> ()
+    private val pdfviewModel : PDFMainViewModel by viewModels<PDFMainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             //call the couroutines
-    viewModel.fetchCourses()
+            viewModel.fetchCourses()
 //            AlignCourseBar(data = foo, navController = rememberNavController())
-            NotistApp(viewModel)
+            NotistApp(viewModel, pdfviewModel)
         }
 
     }
@@ -31,9 +33,9 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun NotistApp(viewModel: MainViewModel) {
+fun NotistApp(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
     NotistTheme {
-        LoginPage(viewModel)
+        LoginPage(viewModel, pdfViewModel)
     }
 }
 
