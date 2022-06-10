@@ -63,11 +63,6 @@ private val alignYourBodyDataAll = listOf(
     R.string.electronics to R.string.ee,
     ).map { StringPair(it.first, it.second) }
 
-
-
-
-
-
 @Composable
 fun CourseBar(
     @StringRes class_name: Int,

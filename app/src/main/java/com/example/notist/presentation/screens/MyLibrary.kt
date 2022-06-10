@@ -1,19 +1,24 @@
 package com.example.notist.presentation.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.notist.MainViewModel
+import com.example.notist.ui.theme.PdfList
+import com.pspdfkit.jetpack.compose.ExperimentalPSPDFKitApi
+import com.example.notist.State
 
+@OptIn(ExperimentalPSPDFKitApi::class, ExperimentalAnimationApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
-fun MyLibrary() {
+fun MyLibrary(viewModel: MainViewModel, navController: NavController) {
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("MyLibrary Screen", style = MaterialTheme.typography.h5)
-    }
+    val state by viewModel.state.collectAsState(State())
+    PdfList(state, viewModel::loadPdfs, viewModel::closeDocument, navController = navController)
+
 }
+
+
