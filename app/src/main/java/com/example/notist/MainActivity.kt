@@ -28,8 +28,8 @@ import com.example.notist.presentation.courses.MyCourseApp
 import com.example.notist.presentation.courses.myRef
 import com.example.notist.presentation.login.LoginPage
 import com.example.notist.presentation.screens.Home
-import com.example.notist.presentation.screens.MyLibrary
-import com.example.notist.presentation.screens.Profile
+import com.example.notist.presentation.mylibrary.MyLibrary
+import com.example.notist.presentation.profile.Profile
 import com.example.notist.presentation.screens.Shop
 
 //import com.example.notist.presentation.courses.MyCourseApp

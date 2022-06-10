@@ -29,7 +29,7 @@ fun CustomTopAppBar(navController: NavHostController, title: String, showBackIco
     TopAppBar(
         backgroundColor = Color(0xFF5C6BC0),
         title = {
-            Text(text = title,color = Color.White,fontWeight = FontWeight.ExtraBold,fontSize = 30.sp)
+            Text(text = title,color = Color.White,fontWeight = FontWeight.Bold,fontSize = 20.sp)
         },
         navigationIcon = if (showBackIcon && navController.previousBackStackEntry != null) {
             {

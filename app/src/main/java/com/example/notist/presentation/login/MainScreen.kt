@@ -9,8 +9,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -21,8 +19,9 @@ import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.presentation.courses.MyCourseApp
 import com.example.notist.presentation.screens.Home
-import com.example.notist.presentation.screens.MyLibrary
-import com.example.notist.presentation.screens.Profile
+import com.example.notist.presentation.mylibrary.MyLibrary
+import com.example.notist.presentation.profile.Profile
+import com.example.notist.presentation.profile.profilesettings
 import com.example.notist.presentation.screens.Shop
 
 @Composable
@@ -62,9 +61,10 @@ fun LoginPage() {
             composable(Routes.MainScreen.route) { LoginPage() }
             composable(NavRoutes.Home.route) { Home() }
             composable(NavRoutes.Courses.route) { MyCourseApp() }
-            composable(NavRoutes.Profile.route) { Profile() }
-            composable(NavRoutes.MyLibrary.route) { MyLibrary() }
+            composable(NavRoutes.Profile.route) { Profile(navController) }
+            composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
             composable(NavRoutes.Shop.route) { Shop() }
+            //composable(Routes.ProfileSettings.route){ profilesettings(isDialogOpen = )}
         }
     }
 
