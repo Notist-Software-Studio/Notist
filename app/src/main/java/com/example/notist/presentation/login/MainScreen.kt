@@ -59,49 +59,49 @@ fun LoginPage(viewModel: MainViewModel) {
                 bottomNavigation(navController = navController)
             }
         }
-    ) { padding ->
-        20.dp
-        NavHost(navController = navController, startDestination = Routes.StartPage.route) {
-
-            composable(Routes.StartPage.route) { StartPage(navController = navController) }
-            composable(Routes.Login.route) { Login(navController = navController)}
-            composable(Routes.SignUp.route) {SignUp(navController = navController)}
-            composable(NavRoutes.Home.route) {Home()}
-            composable(Routes.MainScreen.route) { LoginPage() }
-            composable(NavRoutes.Home.route) { Home() }
-            composable(NavRoutes.Courses.route) { MyCourseApp() }
-            composable(NavRoutes.Profile.route) { Profile(navController) }
-            composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
-            composable(NavRoutes.Shop.route) { Shop() }
-            //composable(Routes.ProfileSettings.route){ profilesettings(isDialogOpen = )}
-        }
-    ) { innerPadding ->
+//    ) { padding ->
+//        20.dp
+//        NavHost(navController = navController, startDestination = Routes.StartPage.route) {
+//
+//            composable(Routes.StartPage.route) { StartPage(navController = navController) }
+//            composable(Routes.Login.route) { Login(navController = navController) }
+//            composable(Routes.SignUp.route) { SignUp(navController = navController) }
+//            composable(NavRoutes.Home.route) { Home() }
+//            composable(Routes.MainScreen.route) { LoginPage() }
+//            composable(NavRoutes.Home.route) { Home() }
+//            composable(NavRoutes.Courses.route) { MyCourseApp() }
+//            composable(NavRoutes.Profile.route) { Profile(navController) }
+//            composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
+//            composable(NavRoutes.Shop.route) { Shop() }
+//            //composable(Routes.ProfileSettings.route){ profilesettings(isDialogOpen = )}
+//        }
+        ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding))
-            {
-                NavHost(navController = navController, startDestination = Routes.StartPage.route) {
-                    composable(NavRoutes.Home.route) { Home() }
-                    composable(Routes.MainScreen.route) { LoginPage(viewModel) }
-                    composable(NavRoutes.Home.route) { Home() }
-                    composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
-                    composable(NavRoutes.Profile.route) { Profile() }
-                    composable(NavRoutes.MyLibrary.route) { MyLibrary() }
-                    composable(NavRoutes.Shop.route) { Shop() }
-                    composable(Routes.StartPage.route) { StartPage(navController = navController) }
-                    composable(Routes.Login.route) { Login(navController = navController) }
-                    composable(Routes.SignUp.route) { SignUp(navController = navController) }
-                    composable(Routes.Teacher.route, arguments = listOf(navArgument("class_name") {
-                        type = NavType.StringType
-                    })) {
-                        val class_name = it.arguments?.getString("class_name").orEmpty()
-                        Teacher(
-                            modifier = Modifier,
-                            class_name = class_name,
-                            navController = navController
-                        )
-                    }
+        {
+            NavHost(navController = navController, startDestination = Routes.StartPage.route) {
+                composable(NavRoutes.Home.route) { Home() }
+                composable(Routes.MainScreen.route) { LoginPage(viewModel) }
+                composable(NavRoutes.Home.route) { Home() }
+                composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
+                composable(NavRoutes.Profile.route) { Profile(navController) }
+                composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
+                composable(NavRoutes.Shop.route) { Shop() }
+                composable(Routes.StartPage.route) { StartPage(navController = navController) }
+                composable(Routes.Login.route) { Login(navController = navController) }
+                composable(Routes.SignUp.route) { SignUp(navController = navController) }
+                composable(Routes.Teacher.route, arguments = listOf(navArgument("class_name") {
+                    type = NavType.StringType
+                })) {
+                    val class_name = it.arguments?.getString("class_name").orEmpty()
+                    Teacher(
+                        modifier = Modifier,
+                        class_name = class_name,
+                        navController = navController
+                    )
                 }
             }
+        }
     }
 
-}
+    }
 

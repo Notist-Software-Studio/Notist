@@ -15,7 +15,7 @@ import com.example.notist.presentation.screens.Home
 import com.example.notist.presentation.mylibrary.MyLibrary
 import com.example.notist.presentation.profile.Profile
 import com.example.notist.presentation.screens.Shop
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 //import com.example.notist.presentation.courses.MyCourseApp
 //import com.example.notist.presentation.screens.Home
 //import com.example.notist.presentation.screens.Courses
