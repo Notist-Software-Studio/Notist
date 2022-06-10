@@ -63,14 +63,7 @@ fun myreferral(shape: Shape){
 fun ScaffoldWithTopBarProfile(navController: NavHostController) {
     Scaffold(
         topBar = {
-            upNavigation(section ="        Profile")
 
-            Icon(
-                painter = painterResource(id = R.drawable.ic_action_name),
-                contentDescription = "Localized description",
-                modifier = Modifier.padding(vertical = 17.dp, horizontal = 20.dp) ,
-                tint = Color.White
-            )
         }, content = {
             Column(
                 modifier = Modifier.fillMaxSize(),

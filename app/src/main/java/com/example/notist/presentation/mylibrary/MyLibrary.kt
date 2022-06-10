@@ -37,14 +37,7 @@ fun MyLibrary(navController: NavHostController) {
 fun ScaffoldWithTopBarMyLibrary(navController: NavHostController) {
     Scaffold(
         topBar = {
-            upNavigation(section = "        MyLibrary")
 
-            Icon(
-                painter = painterResource(id = R.drawable.ic_action_library),
-                contentDescription = "Localized description",
-                modifier = Modifier.padding(vertical = 15.dp, horizontal = 20.dp) ,
-                tint = Color.White
-            )
         }, content = {
             Column(
                 modifier = Modifier.fillMaxSize(),
