@@ -67,7 +67,7 @@ fun StartPageTop(navController: NavHostController){
                         .background(Color(0xffffffff))
                 ) {
                     Image(
-                        painter = painterResource(id =             R.drawable.front),
+                        painter = painterResource(id = R.drawable.front),
                         contentDescription = "",
                         modifier = Modifier
                             .size(350.dp, 500.dp)

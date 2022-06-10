@@ -20,6 +20,7 @@ sealed class Routes(val route: String) {
     object ForgotPassword : Routes("ForgotPassword")
     object Login : Routes("Login")
     object MainScreen : Routes("MainScreen")
+    object ProfileSettings : Routes("ProfileSettings")
     object Teacher: Routes("Teacher/{class_name}",)
     object AddCourse: Routes("AddClass")
 }
