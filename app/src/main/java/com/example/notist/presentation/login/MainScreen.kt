@@ -19,6 +19,7 @@ import androidx.navigation.navArgument
 import com.example.notist.MainViewModel
 import com.example.notist.PDFMainViewModel
 import com.example.notist.R
+import com.example.notist.WebDownloadSource
 import com.example.notist.navigation.NavRoutes
 import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.bottomNavigation

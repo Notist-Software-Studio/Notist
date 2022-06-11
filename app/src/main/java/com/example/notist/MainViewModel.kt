@@ -32,9 +32,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.google.firebase.storage.FirebaseStorage
+import com.pspdfkit.document.download.source.DownloadSource
 
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -92,6 +97,7 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
         }
         handle.addOnFailureListener { Log.e("Firebase", "Save failed $it") }
     }
+
     fun uploadPDF() {
         pdfs.forEach { pdf ->
             var uri = Uri.parse(pdf.localUri)
@@ -138,24 +144,25 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
                 querySnapshot?.let { querySnapshot ->
                     val inPdfs = ArrayList<Pdf>()
                     var documents = querySnapshot.documents
-                    documents?.forEach{
+                    documents?.forEach {
                         var pdf = it.toObject(Pdf::class.java)
-                        pdf?.let{
+                        pdf?.let {
                             inPdfs.add(it)
                         }
                     }
                 }
 
             }
-}
+    }
 
-// For opening PDF
+    // For opening PDF
+
+}
 class PDFMainViewModel(application: Application) : AndroidViewModel(application) {
 
     // The list of PDFs in our assets folder
     private val assetsToLoad = listOf(
-        "dummy.pdf",
-        "sample.pdf"
+        "Annotations.pdf"
     )
 
     private val mutableState = MutableStateFlow(State())
@@ -184,36 +191,63 @@ class PDFMainViewModel(application: Application) : AndroidViewModel(application)
 
 
     @SuppressLint("CheckResult")
-    private suspend fun loadPdf(context: Context, uri: Uri) = suspendCoroutine<PdfDocument> { continuation ->
-        PdfDocumentLoader
-            .openDocumentAsync(context, uri)
-            .subscribe(continuation::resume, continuation::resumeWithException)
-    }
+    private suspend fun loadPdf(context: Context, uri: Uri) =
+        suspendCoroutine<PdfDocument> { continuation ->
+            PdfDocumentLoader
+                .openDocumentAsync(context, uri)
+                .subscribe(continuation::resume, continuation::resumeWithException)
+        }
 
-    private suspend fun extractPdf(context: Context, assetPath: String) = suspendCoroutine<File> { continuation ->
-        val outputFile = File(context.filesDir, assetPath)
-        val request = DownloadRequest.Builder(context)
-            .source(AssetDownloadSource(context, assetPath))
-            .outputFile(outputFile)
-            .overwriteExisting(true)
-            .build()
+    private suspend fun extractPdf(context: Context, assetPath: String) =
+        suspendCoroutine<File> { continuation ->
+            val outputFile = File(context.filesDir, assetPath)
+            val request = DownloadRequest.Builder(context)
+                .source(AssetDownloadSource(context, assetPath))
+                .outputFile(outputFile)
+                .overwriteExisting(true)
+                .build()
 
-        val job = DownloadJob.startDownload(request)
-        job.setProgressListener(
-            object : DownloadJob.ProgressListenerAdapter() {
-                override fun onComplete(output: File) {
-                    continuation.resume(output)
+            val job = DownloadJob.startDownload(request)
+            job.setProgressListener(
+                object : DownloadJob.ProgressListenerAdapter() {
+                    override fun onComplete(output: File) {
+                        continuation.resume(output)
+                    }
+
+                    override fun onError(exception: Throwable) {
+                        super.onError(exception)
+                        continuation.resumeWithException(exception)
+                    }
                 }
-
-                override fun onError(exception: Throwable) {
-                    super.onError(exception)
-                    continuation.resumeWithException(exception)
-                }
-            }
-        )
-    }
+            )
+        }
 
     private fun <T> MutableStateFlow<T>.mutate(mutateFn: T.() -> T) {
         value = value.mutateFn()
+    }
+
+
+
+}
+class WebDownloadSource (private val documentURL: URL) : DownloadSource {
+    override fun open(): InputStream {
+        val connection = documentURL.openConnection() as HttpURLConnection
+        connection.connect()
+        return connection.inputStream
+    }
+
+    override fun getLength(): Long {
+        var length = DownloadSource.UNKNOWN_DOWNLOAD_SIZE
+
+        try {
+            val contentLength = documentURL.openConnection().contentLength
+            if (contentLength != -1) {
+                length = contentLength.toLong()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return length
     }
 }

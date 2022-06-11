@@ -1,4 +1,4 @@
-package com.example.notist.ui.theme
+package com.example.notist.presentation.PDF
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.notist.PDFMainViewModel
 import com.example.notist.data.dto.State
 import com.example.notist.navigation.NavRoutes
 import com.pspdfkit.configuration.activity.PdfActivityConfiguration
@@ -36,8 +37,8 @@ private const val thumbnailPageIndex = 0
 @ExperimentalFoundationApi
 fun PdfList(
     state: State,
-    loadPdfs: () -> Unit,
-    navController: NavController
+    viewModel: PDFMainViewModel,
+    navController: NavController,
 ) {
 
     Scaffold(
@@ -73,7 +74,7 @@ fun PdfList(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(24.dp)
                 ) {
-                    Button(onClick = { loadPdfs() }) {
+                    Button(onClick = { viewModel.loadPdfs() }) {
                         Text(
                             text = "load PDFs",
                             textAlign = TextAlign.Center
@@ -96,6 +97,7 @@ fun PdfList(
                         PdfThumbnail(
                             document = document,
                             onClick = {
+                                viewModel
                                 navController.navigate(NavRoutes.OpenPdf.route)
                             }
                         )
@@ -140,9 +142,7 @@ fun PdfThumbnail(
     document: PdfDocument,
     onClick: () -> Unit
 ) {
-
     val context = LocalContext.current
-
     // Since this can be a costly operation, we wanna memoize the
     // bitmap to prevent recalculating it every time we recompose.
     val thumbnailImage = remember(document) {

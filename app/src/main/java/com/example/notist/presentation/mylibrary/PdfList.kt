@@ -5,7 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import com.example.notist.PDFMainViewModel
-import com.example.notist.ui.theme.PdfList
+import com.example.notist.presentation.PDF.PdfList
 import com.pspdfkit.jetpack.compose.ExperimentalPSPDFKitApi
 import com.example.notist.data.dto.State
 
@@ -16,6 +16,6 @@ import com.example.notist.data.dto.State
 fun pdfList(pdfViewModel: PDFMainViewModel ,navController: NavController) {
 
     val state by pdfViewModel.state.collectAsState(State())
-    PdfList(state, pdfViewModel::loadPdfs, navController = navController)
+    PdfList(state, pdfViewModel, navController = navController)
 
 }
