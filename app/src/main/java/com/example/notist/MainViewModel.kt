@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -33,7 +34,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.google.firebase.storage.FirebaseStorage
 import com.pspdfkit.document.download.source.DownloadSource
-
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -250,4 +250,7 @@ class WebDownloadSource (private val documentURL: URL) : DownloadSource {
 
         return length
     }
+}
+class UserViewModel() {
+    var hunger: MutableState<Int> = mutableStateOf(5)
 }
