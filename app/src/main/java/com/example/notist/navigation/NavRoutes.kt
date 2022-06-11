@@ -21,6 +21,6 @@ sealed class Routes(val route: String) {
     object Login : Routes("Login")
     object MainScreen : Routes("MainScreen")
     object ProfileSettings : Routes("ProfileSettings")
-    object Teacher: Routes("Teacher/{class_name}",)
+    object UploadScreen: Routes("UploadScreen/{courseId}",)
     object AddCourse: Routes("AddClass")
 }

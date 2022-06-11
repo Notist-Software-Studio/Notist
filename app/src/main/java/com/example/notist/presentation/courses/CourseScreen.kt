@@ -104,7 +104,7 @@ fun CourseBar(
         modifier = modifier
             .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
             .width(370.dp)
-            .clickable { navController.navigate("Teacher/$courseId") },
+            .clickable { navController.navigate("UploadScreen/$courseId") },
         horizontalAlignment = Alignment.Start
     ) {
         Text(
@@ -158,9 +158,6 @@ fun HomeScreen(
     viewModel: MainViewModel
 ) {
     val courses by viewModel.courses.observeAsState(initial = emptyList())
-
-//    val course = Course(1,"Data Structures", "CS")
-//    val data = remember { mutableStateListOf(course) }
     val context = LocalContext.current
     val openAdd = remember { mutableStateOf(false) }
     var inClassName by remember { mutableStateOf("") }
@@ -250,47 +247,9 @@ fun HomeScreen(
                     }
                 }
             }
-            var pickedImageUri by remember { mutableStateOf<Uri?>(null) }
-            val launcher =
-                rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    val cursor = it.data?.data?.let { it1 ->
-                        context.contentResolver.query(
-                            it1,
-                            null,
-                            null,
-                            null,
-                            null
-                        )
-                    }
-                    val nameIndex = cursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    val sizeIndex = cursor?.getColumnIndex(OpenableColumns.SIZE)
-                    cursor?.moveToFirst()
-                    val fileName = nameIndex?.let { it1 -> cursor?.getString(it1) }
-                    val size = sizeIndex?.let { it1 -> cursor?.getLong(it1) }
-                    pickedImageUri = it.data?.data
-                    Toast.makeText(context, pickedImageUri.toString(), Toast.LENGTH_LONG).show()
-                    val pdf =
-                        fileName?.let { it1 -> Pdf(localUri = pickedImageUri.toString(), filename = it1) }
-                    if (pdf != null) {
-                        viewModel.pdfs.add(pdf)
-                    }
-                }
 
-//            Button(
-//                onClick = {
-//                    val intent = Intent(
-//                        Intent.ACTION_OPEN_DOCUMENT,
-//                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-//                    )
-//                        .apply {
-//                            addCategory(Intent.CATEGORY_OPENABLE)
-//                        }
-//                    launcher.launch(intent)
-//
-//                }
-//            ) {
-//                Text("Select")
-//            }
+
+
         }
     }
 }
