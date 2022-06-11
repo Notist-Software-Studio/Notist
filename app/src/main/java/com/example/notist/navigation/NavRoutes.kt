@@ -13,6 +13,8 @@ sealed class NavRoutes(
     object Profile: NavRoutes("profile", R.string.bottom_navigation_profile, R.drawable.shape)
     object MyLibrary: NavRoutes("myLibrary", R.string.bottom_navigation_myLibrary, R.drawable.library)
     object Shop: NavRoutes("shop", R.string.bottom_navigation_shop, R.drawable.shopping)
+    object OpenPdf: NavRoutes("openPdf", R.string.openPdf, R.drawable.course )
+    object PdfList: NavRoutes("pdfList", R.string.pdfList, R.drawable.course)
 }
 sealed class Routes(val route: String) {
     object StartPage : Routes("StartPage")

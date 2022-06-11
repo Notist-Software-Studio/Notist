@@ -15,4 +15,6 @@
     <string name="ee">EE</string>
     <string name="eecs">EECS</string>
     <string name="all">All</string>
+    <string name="openPdf">OpenPdf</string>
+    <string name="pdfList">PdfList</string>
 </resources>

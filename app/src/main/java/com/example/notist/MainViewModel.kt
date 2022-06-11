@@ -1,5 +1,10 @@
 package com.example.notist
 
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
+import androidx.core.net.toUri
+import androidx.lifecycle.AndroidViewModel
 import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
@@ -15,10 +20,29 @@ import com.example.notist.data.dto.Pdf
 import com.example.notist.data.dto.User
 import com.example.notist.data.service.CourseService
 import com.example.notist.data.service.ICourseService
+import com.example.notist.data.dto.State
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.pspdfkit.document.PdfDocument
+import com.pspdfkit.document.PdfDocumentLoader
+import com.pspdfkit.document.download.DownloadJob
+import com.pspdfkit.document.download.DownloadRequest
+import com.pspdfkit.document.download.source.AssetDownloadSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import com.google.firebase.storage.FirebaseStorage
+import com.pspdfkit.document.download.source.DownloadSource
+
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class MainViewModel(var courseService: ICourseService = CourseService()) : ViewModel() {
     val pdfs: ArrayList<Pdf> by mutableStateOf(ArrayList<Pdf>())
@@ -120,14 +144,110 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
                 querySnapshot?.let { querySnapshot ->
                     val inPdfs = ArrayList<Pdf>()
                     var documents = querySnapshot.documents
-                    documents?.forEach{
+                    documents?.forEach {
                         var pdf = it.toObject(Pdf::class.java)
-                        pdf?.let{
+                        pdf?.let {
                             inPdfs.add(it)
                         }
                     }
                 }
 
             }
+    }
+
+    // For opening PDF
+
+}
+class PDFMainViewModel(application: Application) : AndroidViewModel(application) {
+
+    // The list of PDFs in our assets folder
+    private val assetsToLoad = listOf(
+        "Annotations.pdf"
+    )
+
+    private val mutableState = MutableStateFlow(State())
+    val state: StateFlow<State> = mutableState
+
+    fun loadPdfs() = viewModelScope.launch(Dispatchers.IO) {
+
+        // Indicate that we are now loading
+        mutableState.mutate { copy(loading = true) }
+
+        val context = getApplication<Application>().applicationContext
+
+        val pdfDocuments = assetsToLoad
+            .map { extractPdf(context, it) }
+            .map { it.toUri() to loadPdf(context, it.toUri()) }
+            .toMap()
+
+        // Stop loading and add the PDFs to our state
+        mutableState.mutate {
+            copy(
+                loading = false,
+                documents = pdfDocuments
+            )
+        }
+    }
+
+
+    @SuppressLint("CheckResult")
+    private suspend fun loadPdf(context: Context, uri: Uri) =
+        suspendCoroutine<PdfDocument> { continuation ->
+            PdfDocumentLoader
+                .openDocumentAsync(context, uri)
+                .subscribe(continuation::resume, continuation::resumeWithException)
+        }
+
+    private suspend fun extractPdf(context: Context, assetPath: String) =
+        suspendCoroutine<File> { continuation ->
+            val outputFile = File(context.filesDir, assetPath)
+            val request = DownloadRequest.Builder(context)
+                .source(AssetDownloadSource(context, assetPath))
+                .outputFile(outputFile)
+                .overwriteExisting(true)
+                .build()
+
+            val job = DownloadJob.startDownload(request)
+            job.setProgressListener(
+                object : DownloadJob.ProgressListenerAdapter() {
+                    override fun onComplete(output: File) {
+                        continuation.resume(output)
+                    }
+
+                    override fun onError(exception: Throwable) {
+                        super.onError(exception)
+                        continuation.resumeWithException(exception)
+                    }
+                }
+            )
+        }
+
+    private fun <T> MutableStateFlow<T>.mutate(mutateFn: T.() -> T) {
+        value = value.mutateFn()
+    }
+
+
+
+}
+class WebDownloadSource (private val documentURL: URL) : DownloadSource {
+    override fun open(): InputStream {
+        val connection = documentURL.openConnection() as HttpURLConnection
+        connection.connect()
+        return connection.inputStream
+    }
+
+    override fun getLength(): Long {
+        var length = DownloadSource.UNKNOWN_DOWNLOAD_SIZE
+
+        try {
+            val contentLength = documentURL.openConnection().contentLength
+            if (contentLength != -1) {
+                length = contentLength.toLong()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return length
     }
 }

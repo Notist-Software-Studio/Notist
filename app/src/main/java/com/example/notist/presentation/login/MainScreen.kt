@@ -17,19 +17,25 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.notist.MainViewModel
+import com.example.notist.PDFMainViewModel
+import com.example.notist.R
+import com.example.notist.WebDownloadSource
 import com.example.notist.navigation.NavRoutes
 import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.presentation.courses.MyCourseApp
+import com.example.notist.presentation.mylibrary.pdfList
+import com.example.notist.presentation.screens.*
 import com.example.notist.presentation.courses.UploadScreen
 import com.example.notist.presentation.screens.Home
 import com.example.notist.presentation.mylibrary.MyLibrary
 import com.example.notist.presentation.profile.Profile
 import com.example.notist.presentation.screens.Shop
 
+
 @Composable
-fun LoginPage(viewModel: MainViewModel) {
+fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
 
     val navController = rememberNavController()
     var showTopBar by rememberSaveable { mutableStateOf(true) }
@@ -75,7 +81,7 @@ fun LoginPage(viewModel: MainViewModel) {
         {
             NavHost(navController = navController, startDestination = Routes.StartPage.route) {
                 composable(NavRoutes.Home.route) { Home() }
-                composable(Routes.MainScreen.route) { LoginPage(viewModel) }
+                composable(Routes.MainScreen.route) { LoginPage(viewModel, pdfViewModel) }
                 composable(NavRoutes.Home.route) { Home() }
                 composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                 composable(NavRoutes.Profile.route) { Profile(navController) }
@@ -92,9 +98,12 @@ fun LoginPage(viewModel: MainViewModel) {
                         modifier = Modifier,
                         courseId = courseId,
                         navController = navController,
-                        viewModel = MainViewModel(),
-                    )
-                }
+                        viewModel = MainViewModel(),)}
+                composable(NavRoutes.OpenPdf.route) { OpenPdf(pdfResId = R.raw.sample) }
+                composable(NavRoutes.PdfList.route) { pdfList(
+                        pdfViewModel = pdfViewModel,
+                        navController = navController
+                    ) }
             }
         }
     }
