@@ -1,4 +1,4 @@
-package com.example.notist
+package com.example.notist.presentation.PDF
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.ScrollableState

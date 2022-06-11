@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.notist.data.dto.Course
 import com.example.notist.data.service.CourseService
 import com.example.notist.data.service.ICourseService
+import com.example.notist.data.dto.State
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.pspdfkit.document.PdfDocument
@@ -57,6 +58,7 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
     }
 }
 
+// For opening PDF
 class PDFMainViewModel(application: Application) : AndroidViewModel(application) {
 
     // The list of PDFs in our assets folder
@@ -89,17 +91,6 @@ class PDFMainViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun openDocument(uri: Uri) {
-        mutableState.mutate {
-            copy(selectedDocumentUri = uri)
-        }
-    }
-
-    fun closeDocument() {
-        mutableState.mutate {
-            copy(selectedDocumentUri = null)
-        }
-    }
 
     @SuppressLint("CheckResult")
     private suspend fun loadPdf(context: Context, uri: Uri) = suspendCoroutine<PdfDocument> { continuation ->

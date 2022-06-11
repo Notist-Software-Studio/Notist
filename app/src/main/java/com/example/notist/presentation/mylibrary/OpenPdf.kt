@@ -9,11 +9,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.notist.PdfViewer
+import com.example.notist.presentation.PDF.PdfViewer
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun test(@RawRes pdfResId: Int) {
+fun OpenPdf(@RawRes pdfResId: Int) {
 
     ComposePDFViewer(pdfResId = pdfResId)
 

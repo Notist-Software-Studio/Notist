@@ -1,4 +1,4 @@
-package com.example.notist
+package com.example.notist.data.dto
 
 import android.net.Uri
 import com.pspdfkit.document.PdfDocument

@@ -1,17 +1,13 @@
 package com.example.notist.ui.theme
 
-import android.net.Uri
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,17 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.notist.MainViewModel
-import com.example.notist.R
-import com.example.notist.State
+import com.example.notist.data.dto.State
 import com.example.notist.navigation.NavRoutes
-import com.example.notist.presentation.screens.*
 import com.pspdfkit.configuration.activity.PdfActivityConfiguration
 import com.pspdfkit.configuration.activity.UserInterfaceViewMode
 import com.pspdfkit.document.PdfDocument
@@ -87,7 +75,7 @@ fun PdfList(
                 ) {
                     Button(onClick = { loadPdfs() }) {
                         Text(
-                            text = "Load Documents",
+                            text = "load PDFs",
                             textAlign = TextAlign.Center
                         )
                     }
@@ -108,7 +96,7 @@ fun PdfList(
                         PdfThumbnail(
                             document = document,
                             onClick = {
-                                navController.navigate(NavRoutes.Test.route)
+                                navController.navigate(NavRoutes.OpenPdf.route)
                             }
                         )
                     }

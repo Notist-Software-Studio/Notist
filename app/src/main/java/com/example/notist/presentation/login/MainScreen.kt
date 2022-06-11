@@ -25,6 +25,7 @@ import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.presentation.courses.MyCourseApp
 import com.example.notist.presentation.courses.Teacher
+import com.example.notist.presentation.mylibrary.pdfList
 import com.example.notist.presentation.screens.*
 
 @Composable
@@ -61,7 +62,7 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
                     composable(NavRoutes.Home.route) { Home() }
                     composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                     composable(NavRoutes.Profile.route) { Profile() }
-                    composable(NavRoutes.MyLibrary.route) { MyLibrary(pdfViewModel, navController = navController) }
+                    composable(NavRoutes.MyLibrary.route) { MyLibrary(navController = navController) }
                     composable(NavRoutes.Shop.route) { Shop() }
                     composable(Routes.StartPage.route) { StartPage(navController = navController) }
                     composable(Routes.Login.route) { Login(navController = navController) }
@@ -77,9 +78,11 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
                             navController = navController
                         )
                     }
-                    composable(NavRoutes.Test.route) { test(pdfResId = R.raw.sample) }
-                    composable(NavRoutes.Test1.route) { test1() }
-                    composable(NavRoutes.Test2.route) { test2() }
+                    composable(NavRoutes.OpenPdf.route) { OpenPdf(pdfResId = R.raw.sample) }
+                    composable(NavRoutes.PdfList.route) { pdfList(
+                        pdfViewModel = pdfViewModel,
+                        navController = navController
+                    ) }
                 }
             }
     }
