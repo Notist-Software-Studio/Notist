@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -22,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.notist.MainViewModel
+import com.example.notist.UserViewModel
 import com.example.notist.navigation.NavRoutes
 import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.bottomNavigation
@@ -35,7 +33,7 @@ import com.example.notist.presentation.screens.Shop
 
 @Composable
 fun LoginPage(viewModel: MainViewModel) {
-
+    val vm by remember { mutableStateOf(UserViewModel()) }
     val navController = rememberNavController()
     var showBar by rememberSaveable { mutableStateOf(true) }
     val context = LocalContext.current
@@ -62,9 +60,8 @@ fun LoginPage(viewModel: MainViewModel) {
         Box(modifier = Modifier.padding(innerPadding))
             {
                 NavHost(navController = navController, startDestination = Routes.StartPage.route) {
-                    composable(NavRoutes.Home.route) { Home() }
+                    composable(NavRoutes.Home.route) { Home(Hunger = vm.hunger.value,navController = navController) }
                     composable(Routes.MainScreen.route) { LoginPage(viewModel) }
-                    composable(NavRoutes.Home.route) { Home() }
                     composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                     composable(NavRoutes.Profile.route) { Profile() }
                     composable(NavRoutes.MyLibrary.route) { MyLibrary() }
