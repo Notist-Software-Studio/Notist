@@ -34,6 +34,7 @@ import com.example.notist.presentation.screens.Shop
 
 @Composable
 fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
+    var money = rememberSaveable { mutableStateOf(50) }
     val vm by remember { mutableStateOf(UserViewModel()) }
     val navController = rememberNavController()
     var showTopBar by rememberSaveable { mutableStateOf(true) }
@@ -83,7 +84,7 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
                 composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                 composable(NavRoutes.Profile.route) { Profile(navController) }
                 composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
-                composable(NavRoutes.Shop.route) { Shop() }
+                composable(NavRoutes.Shop.route) { Shop(money) }
                 composable(Routes.StartPage.route) { StartPage(navController = navController) }
                 composable(Routes.Login.route) { Login(navController = navController) }
                 composable(Routes.SignUp.route) { SignUp(navController = navController) }
