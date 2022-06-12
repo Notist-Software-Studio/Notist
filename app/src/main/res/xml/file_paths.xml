@@ -4,7 +4,7 @@
         path="Android/data/app.notist/files/Pictures"/>
     <external-files-path
         name="my_debug_images"
-        path="/storage/emulated/0/Android/data/app.com.example.notist/files/Pictures/"/>
+        path="/storage/emulated/0/Android/data/com.example.notist/files/Pictures/"/>
     <external-files-path
         name="my_root_images"
         path="/"/>

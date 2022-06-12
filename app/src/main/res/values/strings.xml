@@ -15,8 +15,6 @@
     <string name="ee">EE</string>
     <string name="eecs">EECS</string>
     <string name="all">All</string>
-    <string name="five">5</string>
-    <string name="ten">10</string>
-    <string name="fifteen">15</string>
-    <string name="twenty">20</string>
+    <string name="openPdf">OpenPdf</string>
+    <string name="pdfList">PdfList</string>
 </resources>
