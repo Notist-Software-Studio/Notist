@@ -1,17 +1,23 @@
 package com.example.notist
 
 import android.annotation.SuppressLint
+import com.pspdfkit.configuration.activity.PdfActivityConfiguration
+import com.example.notist.PSPDFExample
 import android.app.Application
 import android.content.Context
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import android.content.ContentValues
+import android.graphics.Bitmap
+import android.graphics.pdf.PdfRenderer
 import android.net.Uri
+import android.os.ParcelFileDescriptor
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.appcompat.app.AlertDialog
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +28,7 @@ import com.example.notist.data.dto.User
 import com.example.notist.data.service.CourseService
 import com.example.notist.data.service.ICourseService
 import com.example.notist.data.dto.State
+import com.google.android.gms.common.internal.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.pspdfkit.document.PdfDocument
@@ -34,18 +41,27 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.google.firebase.storage.FirebaseStorage
 import com.pspdfkit.document.download.source.DownloadSource
+import com.pspdfkit.ui.PdfActivityIntentBuilder
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
+import java.net.MalformedURLException
 import java.net.URL
+import java.net.URLConnection
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import com.pspdfkit.catalog.ui.model.getPdfActivityConfigurationBuilder
+//import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModel(var courseService: ICourseService = CourseService()) : ViewModel() {
+    private val mutableState = MutableStateFlow(State())
+    val state = mutableState.asStateFlow()
     val pdfs: ArrayList<Pdf> by mutableStateOf(ArrayList<Pdf>())
+    val downloadpdfs: MutableLiveData<List<Pdf>> = MutableLiveData<List<Pdf>>()
     var courses: MutableLiveData<List<Course>> = MutableLiveData<List<Course>>()
     private lateinit var firestore: FirebaseFirestore
     private var storageReference = FirebaseStorage.getInstance().getReference()
@@ -73,6 +89,58 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
         }
 
     }
+    fun fetchPdfs() {
+        pdfs.clear()
+        var pdfCollection =
+            firestore.collection("courses").document(selectedCourseId).collection("pdfs")
+        var pdfsListener =
+            pdfCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                querySnapshot?.let { querySnapshot ->
+                    val inPdfs = ArrayList<Pdf>()
+                    var documents = querySnapshot.documents
+                    documents?.forEach {
+                        var pdf = it.toObject(Pdf::class.java)
+                        pdf?.let {
+                            inPdfs.add(it)
+                        }
+                        downloadpdfs.value = inPdfs
+                    }
+                }
+            }
+    }
+    fun downloadPDF(context: Context,urlname: String,filename:String){
+        val source: WebDownloadSource = try {
+            // Try to parse the URL pointing to the PDF document. If an error occurs, log it and leave the example.
+            WebDownloadSource(URL("$urlname"))
+        } catch (e: MalformedURLException) {
+            Log.e(LOG_TAG, "Error while trying to parse the PDF Download URL.", e)
+            return
+        }
+
+        // Build a download request based on various input parameters. Provide the web source pointing to the document.
+        val request = DownloadRequest.Builder(context)
+            .source(source)
+            .outputFile(File(context.getDir("documents", Context.MODE_PRIVATE), "$filename" ))
+            .overwriteExisting(true)
+            .build()
+
+        // This will initiate the download.
+        val job = DownloadJob.startDownload(request)
+        job.setProgressListener(object : DownloadJob.ProgressListenerAdapter() {
+            override fun onComplete(output: File) {
+                val intent = PdfActivityIntentBuilder.fromUri(context, Uri.fromFile(output))
+                    .build()
+                context.startActivity(intent)
+            }
+
+            override fun onError(exception: Throwable) {
+                AlertDialog.Builder(context)
+                    .setMessage("There was an error downloading the example PDF file. For further information see Logcat.")
+                    .show()
+            }
+        })
+    }
+
 
     init {
         firestore = FirebaseFirestore.getInstance()
@@ -111,6 +179,7 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
                     updatePDFDatabase(pdf)
 
                 }
+                downloadpdfs.value = downloadpdfs.value
             }
             uploadTask.addOnFailureListener {
                 Log.e(ContentValues.TAG, it.message ?: "No message")
@@ -135,27 +204,8 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
         }
     }
 
-    fun fetchPdfs() {
-        pdfs.clear()
-        var pdfCollection =
-            firestore.collection("courses").document(selectedCourseId).collection("pdfs")
-        var pdfsListener =
-            pdfCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                querySnapshot?.let { querySnapshot ->
-                    val inPdfs = ArrayList<Pdf>()
-                    var documents = querySnapshot.documents
-                    documents?.forEach {
-                        var pdf = it.toObject(Pdf::class.java)
-                        pdf?.let {
-                            inPdfs.add(it)
-                        }
-                    }
-                }
+    val imageList = mutableStateListOf<ImageBitmap?>(null)
 
-            }
-    }
-
-    // For opening PDF
 
 }
 class PDFMainViewModel(application: Application) : AndroidViewModel(application) {
@@ -229,28 +279,63 @@ class PDFMainViewModel(application: Application) : AndroidViewModel(application)
 
 
 }
-class WebDownloadSource (private val documentURL: URL) : DownloadSource {
+
+class UserViewModel() {
+    var hunger: MutableState<Int> = mutableStateOf(5)
+}
+
+
+class DocumentDownloadExample(context: Context) : PSPDFExample(context, R.string.openPdf, R.string.pdfList) {
+
+    override fun launchExample(context: Context, configuration: PdfActivityConfiguration.Builder) {
+        // The web download source is a custom DownloadSource implemented below.
+
+
+//        val fragment = DownloadProgressFragment()
+//        fragment.show((context as FragmentActivity).supportFragmentManager, "download-fragment")
+//        fragment.job = job
+    }
+}
+
+class WebDownloadSource constructor(private val documentURL: URL) : DownloadSource {
+    /**
+     * The open method needs to return an [InputStream] that will provide the complete document.
+     */
+    @Throws(IOException::class)
     override fun open(): InputStream {
         val connection = documentURL.openConnection() as HttpURLConnection
         connection.connect()
         return connection.inputStream
     }
 
+    /**
+     * If the length is available it can be returned here. This is optional, and can improve the reported download progress, since it will then contain
+     * a percentage of download.
+     */
     override fun getLength(): Long {
         var length = DownloadSource.UNKNOWN_DOWNLOAD_SIZE
 
+        // We try to estimate the download size using the content length header.
+        var urlConnection: URLConnection? = null
         try {
-            val contentLength = documentURL.openConnection().contentLength
+            urlConnection = documentURL.openConnection()
+            val contentLength = urlConnection.contentLength
             if (contentLength != -1) {
                 length = contentLength.toLong()
             }
         } catch (e: IOException) {
-            e.printStackTrace()
+            Log.e(LOG_TAG, "Error while trying to parse the PDF Download URL.", e)
+        } finally {
+            (urlConnection as? HttpURLConnection)?.disconnect()
         }
-
         return length
     }
+
+    override fun toString(): String {
+        return "WebDownloadSource{documentURL=$documentURL}"
+    }
 }
-class UserViewModel() {
-    var hunger: MutableState<Int> = mutableStateOf(5)
-}
+
+private const val LOG_TAG = "DocumentDownloadExample"
+
+

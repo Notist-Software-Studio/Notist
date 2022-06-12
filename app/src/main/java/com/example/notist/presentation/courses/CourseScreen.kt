@@ -1,16 +1,6 @@
 package com.example.notist.presentation.courses
 
-import android.content.ContentResolver
-import android.content.Intent
-import android.net.Uri
-import android.provider.CalendarContract.Attendees.query
-import android.provider.CalendarContract.EventDays.query
-import android.provider.MediaStore
-import android.provider.MediaStore.Images.Media.query
-import android.provider.MediaStore.Video.query
-import android.provider.OpenableColumns
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
