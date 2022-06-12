@@ -30,9 +30,9 @@ import com.example.notist.presentation.shop.FoodList
 
 @Composable
 fun Shop(
-    //money : MutableState<Int>
+    money : MutableState<Int>
 ) {
-    var money = rememberSaveable { mutableStateOf(5780) }
+    //var money = rememberSaveable { mutableStateOf(5780) }
     Scaffold(content = {
         Column(
             modifier = Modifier
