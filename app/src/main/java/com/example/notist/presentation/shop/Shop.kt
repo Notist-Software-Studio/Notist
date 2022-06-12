@@ -18,37 +18,23 @@ import com.example.notist.navigation.NavRoutes
 import com.example.notist.presentation.login.Login
 
 @Composable
-fun Shop() {
-    val vm by remember { mutableStateOf(UserViewModel()) }
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Shop Screen", style = MaterialTheme.typography.h5)
-        Button(
-            onClick = { vm.hunger.value++ },
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xFF5C6BC0)
-            ),
+fun Shop(
+    money : MutableState<Int>
+) {
+    //var money = rememberSaveable { mutableStateOf(5780) }
+    Scaffold(content = {
+        Column(
             modifier = Modifier
-                .width(100.dp)
-                .height(50.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "${vm.hunger.value}",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.ExtraBold
-            )
+            //Text("Shop Screen", style = MaterialTheme.typography.h5)
+            ShopDescription()
+            Currency(money.value)
+            Spacer(modifier = Modifier.height(20.dp))
+            FoodGrid(money)
         }
-    }
+    })
+}
 
-}
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview20() {
-    val navController = rememberNavController()
-    Shop()
-}
