@@ -17,7 +17,6 @@ import androidx.navigation.navArgument
 import com.example.notist.MainViewModel
 import com.example.notist.PDFMainViewModel
 import com.example.notist.R
-import com.example.notist.WebDownloadSource
 import com.example.notist.navigation.NavRoutes
 import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.bottomNavigation
@@ -34,7 +33,6 @@ import com.example.notist.presentation.screens.Shop
 
 @Composable
 fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
-    var money = rememberSaveable { mutableStateOf(50) }
     val vm by remember { mutableStateOf(UserViewModel()) }
     val navController = rememberNavController()
     var showTopBar by rememberSaveable { mutableStateOf(true) }
@@ -84,7 +82,7 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
                 composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                 composable(NavRoutes.Profile.route) { Profile(navController) }
                 composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
-                composable(NavRoutes.Shop.route) { Shop(money) }
+                composable(NavRoutes.Shop.route) { Shop() }
                 composable(Routes.StartPage.route) { StartPage(navController = navController) }
                 composable(Routes.Login.route) { Login(navController = navController) }
                 composable(Routes.SignUp.route) { SignUp(navController = navController) }

@@ -1,39 +1,47 @@
 package com.example.notist.presentation.courses
 
 import android.content.Intent
+import com.pspdfkit.catalog.ui.model.State
+import com.pspdfkit.catalog.ui.model.getPdfActivityConfigurationBuilder
+import android.media.Image
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.notist.MainViewModel
+import com.example.notist.PSPDFExample
 import com.example.notist.R
+import com.example.notist.data.dto.Course
 import com.example.notist.data.dto.Pdf
+import com.example.notist.presentation.PDF.DocumentDownloadExample
+import org.koin.core.KoinApplication.Companion.init
 
 
 @Composable
 fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostController,viewModel: MainViewModel) {
+    val pdfs by viewModel.downloadpdfs.observeAsState(initial = emptyList())
     val context = LocalContext.current
     Column(
         modifier
@@ -90,6 +98,87 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
         ) {
             Text("Select")
         }
+        AlignFileBar(modifier = Modifier, data = pdfs, navController)
+
     }
 }
+
+@Composable
+fun FileBar(
+    localUri: String,
+    remoteUri: String,
+    id: String,
+    filename: String,
+    modifier: Modifier = Modifier, navController: NavHostController,
+    viewModel: MainViewModel
+) {
+    val context = LocalContext.current
+    val state by viewModel.state.collectAsState(State())
+    Column(
+        modifier = modifier
+            .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
+            .width(370.dp)
+            .clickable {
+                       viewModel.downloadPDF(context,remoteUri,filename)
+            }
+        ,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            text = filename,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(
+                start = 16.dp
+            )
+        )
+//        Text(
+//            text = remoteUri,
+//            color = Color.White,
+//            style = MaterialTheme.typography.h6,
+//            modifier = Modifier.padding(
+//                start = 16.dp
+//            )
+//        )
+//        Text(
+//            text = id,
+//            color = Color.White,
+//            style = MaterialTheme.typography.h6,
+//            modifier = Modifier.padding(
+//                start = 16.dp
+//            )
+//        )
+    }
+
+}
+
+@Composable
+fun AlignFileBar(
+    modifier: Modifier = Modifier,
+    data: List<Pdf>,
+    navController: NavHostController
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .paddingFromBaseline(bottom = 300.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        items(data) { item ->
+            FileBar(
+                localUri = item.localUri,
+                remoteUri = item.remoteUri,
+                id = item.id,
+                filename = item.filename,
+                modifier = Modifier,
+                navController,
+                viewModel = MainViewModel()
+            )
+        }
+    }
+}
+
+
+
+
 
