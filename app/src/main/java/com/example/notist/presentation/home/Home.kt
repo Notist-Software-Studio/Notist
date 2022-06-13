@@ -166,6 +166,7 @@ fun Home(Hunger: Int, navController: NavHostController) {
         }
         hpbar(brapa = Hunger)
     }
+
     Box(modifier = Modifier.fillMaxSize())
     {
         Column(
