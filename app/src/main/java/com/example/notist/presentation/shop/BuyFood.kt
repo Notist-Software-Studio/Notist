@@ -30,26 +30,22 @@ import com.example.notist.presentation.screens.Currency
 @Composable
 fun BuyFood(
     isBuy: MutableState<Boolean>,
+    cannotBuy: MutableState<Boolean>,
     money: MutableState<Int>,
+    hunger : MutableState<Int>,
+    cost:Int,
     @DrawableRes drawable: Int,
     @StringRes text: Int,
 ) {
     var count : Int = 0
-    var cost : Int = 0
     when (text) {
         R.string.five -> count = 1
         R.string.ten -> count = 2
         R.string.fifteen -> count = 3
         R.string.twenty -> count = 4
     };
-    when (text) {
-        R.string.five -> cost = 5
-        R.string.ten -> cost = 10
-        R.string.fifteen -> cost = 15
-        R.string.twenty -> cost = 20
-    };
 
-    if (isBuy.value) {
+    if ((isBuy.value) && (!cannotBuy.value)) {
         Dialog(onDismissRequest = { isBuy.value = false }) {
             Surface(
                 modifier = Modifier
@@ -147,6 +143,8 @@ fun BuyFood(
                         onClick = {
                             isBuy.value = false
                             money.value = money.value - cost
+                            hunger.value += count
+                            if(hunger.value>5) hunger.value = 5
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -173,7 +171,9 @@ fun BuyFood(
 @Composable
 fun DefaultPreview24() {
     val isBuy = remember { mutableStateOf(true) }
+    val cannotBuy = remember { mutableStateOf(false) }
     var money = remember { mutableStateOf(5780) }
-   BuyFood(isBuy,money,text = R.string.five,
+    var hunger = remember { mutableStateOf(5) }
+   BuyFood(isBuy,cannotBuy,money,hunger,5,text = R.string.five,
        drawable = R.drawable.food1,)
 }

@@ -29,7 +29,7 @@ import com.example.notist.ui.theme.Purple500
 
 
 @Composable
-fun profileshare(isDialogShare: MutableState<Boolean>) {
+fun profileshare(isDialogShare: MutableState<Boolean>,money : MutableState<Int>) {
 
     if (isDialogShare.value) {
         Dialog(onDismissRequest = { isDialogShare.value = false }) {
@@ -69,7 +69,7 @@ fun profileshare(isDialogShare: MutableState<Boolean>) {
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     Text(
-                        text = "You have just earned 100 coins.",
+                        text = "You have just earned 20 coins.",
                         style = TextStyle(
                             fontSize = 13.sp,
                             fontFamily = FontFamily.SansSerif,
@@ -102,6 +102,7 @@ fun profileshare(isDialogShare: MutableState<Boolean>) {
                     Button(
                         onClick = {
                             isDialogShare.value = false
+                            money.value += 20
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
@@ -131,5 +132,6 @@ fun profileshare(isDialogShare: MutableState<Boolean>) {
 fun DefaultPreview12() {
     val navController = rememberNavController()
     val isDialogEnter = remember { mutableStateOf(true)}
-    profileshare(isDialogEnter)
+    var money = remember { mutableStateOf(5780) }
+    profileshare(isDialogEnter,money)
 }

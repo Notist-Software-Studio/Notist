@@ -81,9 +81,9 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
                 composable(NavRoutes.Home.route) { Home(Hunger = vm.hunger.value,navController = navController) }
                 composable(Routes.MainScreen.route) { LoginPage(viewModel, pdfViewModel) }
                 composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
-                composable(NavRoutes.Profile.route) { Profile(navController) }
+                composable(NavRoutes.Profile.route) { Profile(navController,money) }
                 composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
-                composable(NavRoutes.Shop.route) { Shop(money) }
+                composable(NavRoutes.Shop.route) { Shop(money,vm.hunger) }
                 composable(Routes.StartPage.route) { StartPage(navController = navController) }
                 composable(Routes.Login.route) { Login(navController = navController) }
                 composable(Routes.SignUp.route) { SignUp(navController = navController) }

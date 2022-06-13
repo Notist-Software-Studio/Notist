@@ -30,7 +30,7 @@ import com.example.notist.ui.theme.Purple500
 
 
 @Composable
-fun profileenter(isDialogEnter: MutableState<Boolean>) {
+fun profileenter(isDialogEnter: MutableState<Boolean>,money : MutableState<Int>) {
 
     if (isDialogEnter.value) {
         Dialog(onDismissRequest = { isDialogEnter.value = false }) {
@@ -70,7 +70,7 @@ fun profileenter(isDialogEnter: MutableState<Boolean>) {
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     Text(
-                        text = "You have just earned 50 coins by",
+                        text = "You have just earned 20 coins by",
                         style = TextStyle(
                             fontSize = 13.sp,
                             fontFamily = FontFamily.SansSerif,
@@ -94,6 +94,7 @@ fun profileenter(isDialogEnter: MutableState<Boolean>) {
                     Button(
                         onClick = {
                             isDialogEnter.value = false
+                            money.value += 20
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
@@ -123,5 +124,6 @@ fun profileenter(isDialogEnter: MutableState<Boolean>) {
 fun DefaultPreview11() {
     val navController = rememberNavController()
     val isDialogEnter = remember { mutableStateOf(true)}
-    profileenter(isDialogEnter)
+    var money = remember { mutableStateOf(5780) }
+    profileenter(isDialogEnter,money)
 }
