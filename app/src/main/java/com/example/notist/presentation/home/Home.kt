@@ -66,7 +66,7 @@ fun objectives(shape: Shape,navController: NavHostController){
     ) {
         Box(
             modifier = Modifier
-                .size(350.dp, 200.dp)
+                .size(350.dp, 160.dp)
                 .clip(shape)
                 .background(Color(0xFFC0C8D7))
         ) {
@@ -141,11 +141,11 @@ fun Home(Hunger: Int, navController: NavHostController) {
         ) {
             //Spacer(modifier = Modifier.height(0.dp))
             hpbox(shape = RoundedCornerShape(20.dp))
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             Circle(shape = CircleShape)
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             objectives(shape = RoundedCornerShape(30.dp),navController)
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             progress(shape = RoundedCornerShape(30.dp),navController)
         }
     }
@@ -156,7 +156,7 @@ fun Home(Hunger: Int, navController: NavHostController) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             Image(
                 painter = painterResource(id = R.drawable.panda),
                 contentDescription = "",
@@ -173,14 +173,14 @@ fun Home(Hunger: Int, navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ){
-            Spacer(modifier = Modifier.height(340.dp))
+            Spacer(modifier = Modifier.height(315.dp))
             Text(
                 text = "Daily Objectives",
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.ExtraBold
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             Button(
                 onClick = { navController.navigate(NavRoutes.Profile.route)},
                 shape = RoundedCornerShape(10.dp),
@@ -189,7 +189,7 @@ fun Home(Hunger: Int, navController: NavHostController) {
                 ),
                 modifier = Modifier
                     .width(300.dp)
-                    .height(60.dp)
+                    .height(50.dp)
             ) {
                 Text(
                     text = "Recommend apps to a friend ",
@@ -221,7 +221,7 @@ fun Home(Hunger: Int, navController: NavHostController) {
                 ),
                 modifier = Modifier
                     .width(300.dp)
-                    .height(60.dp)
+                    .height(50.dp)
             ) {
                 Text(
                     text = "Share a note",
@@ -245,14 +245,14 @@ fun Home(Hunger: Int, navController: NavHostController) {
                     fontWeight = FontWeight.ExtraBold
                 )
             }
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "My Progress",
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.ExtraBold
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Button(
                 onClick = {},
                 shape = RoundedCornerShape(10.dp),
@@ -261,7 +261,7 @@ fun Home(Hunger: Int, navController: NavHostController) {
                 ),
                 modifier = Modifier
                     .width(300.dp)
-                    .height(70.dp)
+                    .height(65.dp)
             ) {
                 Column() {
                     Text(
