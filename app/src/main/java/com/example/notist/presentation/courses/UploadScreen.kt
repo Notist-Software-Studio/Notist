@@ -83,23 +83,54 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
                     }
                 }
             }
-        Button(
-            onClick = {
-                val intent = Intent(
-                    Intent.ACTION_OPEN_DOCUMENT,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                )
-                    .apply {
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                    }
-                launcher.launch(intent)
+//        Button(
+//            modifier = Modifier
+//                .padding(30.dp)
+//                .align(Alignment.BottomCenter),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = Color(0xFF5C6BC0)
+//            ),
+//            onClick = {
+//                val intent = Intent(
+//                    Intent.ACTION_OPEN_DOCUMENT,
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+//                )
+//                    .apply {
+//                        addCategory(Intent.CATEGORY_OPENABLE)
+//                    }
+//                launcher.launch(intent)
+//
+//            }
+//        ) {
+//            Text("Select Document",color = Color.White)
+//        }
+//        AlignFileBar(modifier = Modifier, data = pdfs, navController)
+        Box(modifier = Modifier.fillMaxSize()) {
+            AlignFileBar(modifier = Modifier, data = pdfs, navController)
+            Button(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .height(50.dp)
+                    .align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF5C6BC0)
+                ),
+                shape = RoundedCornerShape(20.dp),
+                onClick = {
+                    val intent = Intent(
+                        Intent.ACTION_OPEN_DOCUMENT,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    )
+                        .apply {
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                        }
+                    launcher.launch(intent)
 
+                }
+            ) {
+                Text("SELECT DOCUMENT", color = Color.White)
             }
-        ) {
-            Text("Select")
         }
-        AlignFileBar(modifier = Modifier, data = pdfs, navController)
-
     }
 }
 
@@ -116,13 +147,15 @@ fun FileBar(
     val state by viewModel.state.collectAsState(State())
     Column(
         modifier = modifier
-            .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
+            .background(color = Color(0xFFC0C8D7), shape = RoundedCornerShape(10.dp))
             .width(370.dp)
+            .height(60.dp)
             .clickable {
                        viewModel.downloadPDF(context,remoteUri,filename)
             }
         ,
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = filename,

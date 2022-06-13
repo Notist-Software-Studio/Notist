@@ -63,7 +63,7 @@ fun SearchBar(
             modifier = modifier
                 .fillMaxWidth()
                 .heightIn(min = 56.dp)
-                .clip(shape = RoundedCornerShape(10.dp))
+                .clip(shape = RoundedCornerShape(30.dp))
         )
 //        Button(
 //            onClick = {
@@ -92,10 +92,12 @@ fun CourseBar(
     val context = LocalContext.current
     Column(
         modifier = modifier
-            .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
+            .background(Color(0xFFC0C8D7), shape = RoundedCornerShape(10.dp))
             .width(370.dp)
+            .height(60.dp)
             .clickable { navController.navigate("UploadScreen/$courseId") },
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = class_name,
@@ -160,13 +162,18 @@ fun HomeScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             AlignCourseBar(modifier = Modifier, data = courses, navController)
             Button(modifier = Modifier
-                .padding(24.dp)
+                .padding(20.dp)
+                .height(50.dp)
                 .align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF5C6BC0)
+                ),
+                shape = RoundedCornerShape(20.dp),
                 onClick = {
 //                    data.add(CourseStringPair("Data Structures", "CS"))
                     openAdd.value = !openAdd.value
                 }) {
-                Text(text = "Add More")
+                Text(text = "ADD NEW COURSE",color = Color.White)
             }
 
             if (openAdd.value) {
@@ -177,10 +184,11 @@ fun HomeScreen(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(500.dp)
+                            .height(400.dp)
                             .padding(20.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        color = Color(0xFFC0C8D7)
+                        shape = RoundedCornerShape(30.dp),
+                        //color = Color(0xFFC0C8D7)
+                        color = Color.White
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -222,14 +230,22 @@ fun HomeScreen(
                                             Toast.LENGTH_LONG
                                         ).show()
                                         openAdd.value = false
-                                    }) {
-                                    Text("Add Course")
+                                    },
+                                    shape = RoundedCornerShape(30.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF5C6BC0)
+                                    )) {
+                                    Text("CANCEL",color = Color.White)
                                 }
                                 Button(
                                     onClick = {
                                         openAdd.value = false
-                                    }) {
-                                    Text("Cancel")
+                                    },
+                                    shape = RoundedCornerShape(30.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF5C6BC0)
+                                    )) {
+                                    Text("ADD COURSE",color = Color.White)
                                 }
                             }
 
