@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.example.notist.R
 import com.example.notist.presentation.shop.BuyFood
 import com.example.notist.presentation.shop.FoodList
+import com.example.notist.presentation.shop.NoMoney
 
 @Composable
 fun Shop(
@@ -70,9 +71,9 @@ fun Food(
     var cannotBuy = remember { mutableStateOf(false)}
     if(money.value- cost < 0) cannotBuy.value = true
     BuyFood(isBuy,cannotBuy,money,hunger,cost,drawable,text)
+    NoMoney(isBuy,cannotBuy)
     Button(
-        onClick = {isBuy.value = true
-                  print(cannotBuy.value)},
+        onClick = {isBuy.value = true},
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .width(100.dp)
