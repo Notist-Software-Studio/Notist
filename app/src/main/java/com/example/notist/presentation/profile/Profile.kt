@@ -25,9 +25,9 @@ import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.upNavigation
 
 @Composable
-fun Profile(navController: NavHostController) {
+fun Profile(navController: NavHostController,money : MutableState<Int>,) {
     Box(modifier = Modifier.fillMaxSize()) {
-        ScaffoldWithTopBarProfile(navController)
+        ScaffoldWithTopBarProfile(navController,money)
     }
 }
 
@@ -60,7 +60,7 @@ fun myreferral(shape: Shape){
 
 
 @Composable
-fun ScaffoldWithTopBarProfile(navController: NavHostController) {
+fun ScaffoldWithTopBarProfile(navController: NavHostController,money : MutableState<Int>,) {
     Scaffold(
         topBar = {
 
@@ -75,34 +75,60 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                     onClick = { },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
-                        .width(160.dp)
-                        .height(35.dp)
+                        .width(165.dp)
+                        .height(40.dp)
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xFFE4E6E7),
-
                     )
-
-                    //.padding(vertical = 12.dp, horizontal = 20.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.coin),
+                        painter = painterResource(R.drawable.coin),
                         contentDescription = "",
                         modifier = Modifier
-                            .size(20.dp, 30.dp)
-                            .padding(0.dp, 0.dp, 0.dp, 0.dp)
-
+                            .size(25.dp, 25.dp)
                     )
                     Text(
-                        text = "100",
+                        text = "${money.value}",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.End,
-                        modifier = Modifier.size(35.dp, 60.dp),
+                        modifier = Modifier.size(200.dp),
                         color = Color.Black
                     )
-
-                    //Spacer(modifier = Modifier.height(20.dp))
-
                 }
+//                Button(
+//                    onClick = { },
+//                    shape = RoundedCornerShape(10.dp),
+//                    modifier = Modifier
+//                        .width(160.dp)
+//                        .height(35.dp)
+//                        .padding(vertical = 0.dp, horizontal = 30.dp),
+//                    colors = ButtonDefaults.buttonColors(
+//                        backgroundColor = Color(0xFFE4E6E7),
+//
+//                    )
+//
+//                    //.padding(vertical = 12.dp, horizontal = 20.dp)
+//                ) {
+//                    Image(
+//                        painter = painterResource(id = R.drawable.coin),
+//                        contentDescription = "",
+//                        modifier = Modifier
+//                            .size(20.dp, 30.dp)
+//                            .padding(0.dp, 0.dp, 0.dp, 0.dp)
+//
+//                    )
+//                    Text(
+//                        text = "100",
+//                        textAlign = TextAlign.End,
+//                        modifier = Modifier.size(35.dp, 60.dp),
+//                        color = Color.Black
+//                    )
+//
+//                    //Spacer(modifier = Modifier.height(20.dp))
+//
+//                }
             }
             Row(
                 modifier = Modifier.height(95.dp),
@@ -167,7 +193,7 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 val isDialogEnter = remember { mutableStateOf(false)}
-                profileenter(isDialogEnter)
+                profileenter(isDialogEnter,money)
                 Button(
                     onClick = {isDialogEnter.value = true},
                     shape = RoundedCornerShape(10.dp),
@@ -198,7 +224,7 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
 
                     )
                     Text(
-                        text = "+50",
+                        text = "+20",
                         textAlign = TextAlign.Start,
                         modifier = Modifier.size(35.dp, 60.dp),
                         color = Color.Black
@@ -238,7 +264,7 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 val isDialogShare = remember { mutableStateOf(false)}
-                profileshare(isDialogShare)
+                profileshare(isDialogShare,money)
                 Button(
                     onClick = {isDialogShare.value = true},
                     shape = RoundedCornerShape(10.dp),
@@ -305,5 +331,6 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController) {
 @Composable
 fun DefaultPreview9() {
     val navController = rememberNavController()
-    Profile(navController = navController)
+    var money = remember { mutableStateOf(5780) }
+    Profile(navController = navController,money)
 }

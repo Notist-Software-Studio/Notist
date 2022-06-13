@@ -206,7 +206,7 @@ fun Home(Hunger: Int, navController: NavHostController) {
                         .padding(0.dp, 0.dp, 0.dp, 0.dp)
                 )
                 Text(
-                    text = "+10",
+                    text = "+20",
                     color = Color.Black,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.ExtraBold

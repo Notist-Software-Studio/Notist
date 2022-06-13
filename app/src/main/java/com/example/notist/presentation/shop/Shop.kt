@@ -30,9 +30,10 @@ import com.example.notist.presentation.shop.FoodList
 
 @Composable
 fun Shop(
-    money : MutableState<Int>
+    money : MutableState<Int>,
+    hunger : MutableState<Int>
 ) {
-    var money = rememberSaveable { mutableStateOf(5780) }
+    //var money = rememberSaveable { mutableStateOf(50) }
     Scaffold(content = {
         Column(
             modifier = Modifier
@@ -44,7 +45,7 @@ fun Shop(
             ShopDescription()
             Currency(money.value)
             Spacer(modifier = Modifier.height(20.dp))
-            FoodGrid(money)
+            FoodGrid(money,hunger)
         }
     })
 }
@@ -54,13 +55,24 @@ fun Food(
     @DrawableRes drawable: Int,
     @StringRes text: Int,
     money : MutableState<Int>,
+    hunger : MutableState<Int>,
     //buy: Boolean,
     modifier: Modifier = Modifier
 ) {
+    var cost : Int = 0
+    when (text) {
+        R.string.five -> cost = 5
+        R.string.ten -> cost = 10
+        R.string.fifteen -> cost = 15
+        R.string.twenty -> cost = 20
+    };
     var isBuy = remember { mutableStateOf(false)}
-    BuyFood(isBuy,money,drawable,text)
+    var cannotBuy = remember { mutableStateOf(false)}
+    if(money.value- cost < 0) cannotBuy.value = true
+    BuyFood(isBuy,cannotBuy,money,hunger,cost,drawable,text)
     Button(
-        onClick = {isBuy.value = true},
+        onClick = {isBuy.value = true
+                  print(cannotBuy.value)},
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .width(100.dp)
@@ -130,6 +142,7 @@ private val foodList = listOf(
 @Composable
 fun FoodGrid(
     money : MutableState<Int>,
+    hunger : MutableState<Int>,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -144,6 +157,7 @@ fun FoodGrid(
             item.drawable,
             item.text,
             money,
+            hunger,
             //item.buy,
             Modifier)
         }
@@ -225,7 +239,8 @@ fun Currency(
 @Composable
 fun DefaultPreview21() {
     var money = rememberSaveable { mutableStateOf(5780) }
-    FoodGrid(money)
+    var hunger = rememberSaveable { mutableStateOf(5) }
+    FoodGrid(money,hunger)
 }
 
 @Preview(showBackground = true)
