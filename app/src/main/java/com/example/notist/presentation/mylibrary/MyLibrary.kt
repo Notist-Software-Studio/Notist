@@ -6,10 +6,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -28,10 +31,15 @@ fun MyLibrary(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(24.dp)
     ) {
-        Button(onClick = { navController.navigate(NavRoutes.PdfList.route) }) {
+        Button(onClick = { navController.navigate(NavRoutes.PdfList.route) },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFF5C6BC0)
+                ),) {
             Text(
-                text = "course name",
-                textAlign = TextAlign.Center
+                text = "COURSE NAME",
+                textAlign = TextAlign.Center,
+                color = Color.White
+
             )
         }
     }

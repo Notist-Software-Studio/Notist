@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import com.example.notist.UserViewModel
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -29,12 +30,16 @@ import com.example.notist.presentation.screens.Home
 import com.example.notist.presentation.mylibrary.MyLibrary
 import com.example.notist.presentation.profile.Profile
 import com.example.notist.presentation.screens.Shop
+import com.pspdfkit.internal.vm
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 
 
 @Composable
-fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
+fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel,hunger : MutableState<Int>,ticks: MutableState<Int>) {
     var money = rememberSaveable { mutableStateOf(50) }
-    val vm by remember { mutableStateOf(UserViewModel()) }
+    //val vm by remember { mutableStateOf(UserViewModel()) }
     val navController = rememberNavController()
     var showTopBar by rememberSaveable { mutableStateOf(true) }
     var showBotBar by rememberSaveable { mutableStateOf(true) }
@@ -78,12 +83,12 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
         Box(modifier = Modifier.padding(innerPadding))
         {
             NavHost(navController = navController, startDestination = Routes.StartPage.route) {
-                composable(NavRoutes.Home.route) { Home(Hunger = vm.hunger.value,navController = navController) }
-                composable(Routes.MainScreen.route) { LoginPage(viewModel, pdfViewModel) }
+                composable(NavRoutes.Home.route) { Home(Hunger = hunger.value,navController = navController,ticks) }
+                composable(Routes.MainScreen.route) { LoginPage(viewModel, pdfViewModel,hunger,ticks) }
                 composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                 composable(NavRoutes.Profile.route) { Profile(navController,money) }
                 composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
-                composable(NavRoutes.Shop.route) { Shop(money,vm.hunger) }
+                composable(NavRoutes.Shop.route) { Shop(money,hunger) }
                 composable(Routes.StartPage.route) { StartPage(navController = navController) }
                 composable(Routes.Login.route) { Login(navController = navController) }
                 composable(Routes.SignUp.route) { SignUp(navController = navController) }
@@ -105,6 +110,6 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel) {
         }
     }
 
-    }
+}
 
 

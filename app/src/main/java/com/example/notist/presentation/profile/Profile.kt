@@ -312,7 +312,7 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController,money : MutableSt
                         .height(35.dp)
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFC0C8D7),
+                        backgroundColor = Color(0xFF5C6BC0),
                     )
 
                     //.padding(vertical = 12.dp, horizontal = 20.dp)
