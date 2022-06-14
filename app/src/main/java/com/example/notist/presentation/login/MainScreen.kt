@@ -23,11 +23,11 @@ import com.example.notist.navigation.Routes
 import com.example.notist.presentation.bar.bottomNavigation
 import com.example.notist.presentation.bar.upNavigation
 import com.example.notist.presentation.courses.MyCourseApp
-import com.example.notist.presentation.mylibrary.pdfList
+import com.example.notist.presentation.courses.MyLibrary
 import com.example.notist.presentation.screens.*
 import com.example.notist.presentation.courses.UploadScreen
 import com.example.notist.presentation.screens.Home
-import com.example.notist.presentation.mylibrary.MyLibrary
+import com.example.notist.presentation.mylibrary.*
 import com.example.notist.presentation.profile.Profile
 import com.example.notist.presentation.screens.Shop
 import com.pspdfkit.internal.vm
@@ -87,25 +87,27 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel,hunger : 
                 composable(Routes.MainScreen.route) { LoginPage(viewModel, pdfViewModel,hunger,ticks) }
                 composable(NavRoutes.Courses.route) { MyCourseApp(navController, viewModel) }
                 composable(NavRoutes.Profile.route) { Profile(navController,money) }
-                composable(NavRoutes.MyLibrary.route) { MyLibrary(navController) }
+                composable(NavRoutes.MyLibrary.route) { MyLibrary(navController,viewModel) }
                 composable(NavRoutes.Shop.route) { Shop(money,hunger) }
                 composable(Routes.StartPage.route) { StartPage(navController = navController) }
                 composable(Routes.Login.route) { Login(navController = navController) }
                 composable(Routes.SignUp.route) { SignUp(navController = navController) }
-                composable(Routes.UploadScreen.route, arguments = listOf(navArgument(name = "courseId") {
+                composable(Routes.UploadScreen.route, arguments = listOf(
+                    navArgument(name = "courseId") {
                     type = NavType.StringType
                 })) {
                     val courseId = it.arguments?.getString("courseId").orEmpty()
+                    val class_name = it.arguments?.getString("class_name").orEmpty()
+                    val major = it.arguments?.getString("major").orEmpty()
+
                     UploadScreen(
                         modifier = Modifier,
-                        courseId = courseId,
+                        incourseId = courseId,
+                        inclass_name = class_name,
+                        inmajor = major,
                         navController = navController,
                         viewModel = MainViewModel(),money = money)}
-                composable(NavRoutes.OpenPdf.route) { OpenPdf(pdfResId = R.raw.sample) }
-                composable(NavRoutes.PdfList.route) { pdfList(
-                        pdfViewModel = pdfViewModel,
-                        navController = navController,
-                    )}
+
             }
         }
     }

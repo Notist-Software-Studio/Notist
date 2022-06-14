@@ -17,7 +17,6 @@ import com.example.notist.presentation.courses.AlignCourseBar
 import com.example.notist.ui.theme.NotistTheme
 import com.example.notist.presentation.login.LoginPage
 import com.example.notist.presentation.screens.Home
-import com.example.notist.presentation.mylibrary.MyLibrary
 import com.example.notist.presentation.profile.Profile
 import com.example.notist.presentation.screens.Shop
 import com.pspdfkit.internal.vm
@@ -45,6 +44,7 @@ class MainActivity : ComponentActivity() {
             //call the couroutines
             var ticks = rememberSaveable{ mutableStateOf(0) }
             viewModel.fetchCourses()
+            viewModel.fetchCoursesSaved()
 //            AlignCourseBar(data = foo, navController = rememberNavController())
             NotistApp(viewModel, pdfviewModel,vm.hunger,ticks)
             timer(ticks,vm.hunger)
@@ -84,8 +84,3 @@ fun timer(
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-
-}

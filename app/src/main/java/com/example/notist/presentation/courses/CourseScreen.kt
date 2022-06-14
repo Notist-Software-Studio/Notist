@@ -34,7 +34,6 @@ import com.google.firebase.ktx.Firebase
 import java.lang.Character.getType
 
 val database = Firebase.database
-val myRef = database.getReference("message")
 
 @Composable
 fun SearchBar(
@@ -76,10 +75,7 @@ fun SearchBar(
 
 }
 
-data class CourseStringPair(
-    val class_name: String,
-    val major: String
-)
+
 
 
 @Composable
@@ -216,19 +212,9 @@ fun HomeScreen(
                                 verticalAlignment = Alignment.Top,
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
+
                                 Button(
                                     onClick = {
-
-                                        var add_course = Course().apply {
-                                            class_name = inClassName
-                                            major = inMajor
-                                        }
-                                        viewModel.save(add_course)
-                                        Toast.makeText(
-                                            context,
-                                            "$inClassName $inMajor",
-                                            Toast.LENGTH_LONG
-                                        ).show()
                                         openAdd.value = false
                                     },
                                     shape = RoundedCornerShape(30.dp),
@@ -239,6 +225,19 @@ fun HomeScreen(
                                 }
                                 Button(
                                     onClick = {
+
+                                        var add_course = Course().apply {
+                                            class_name = inClassName
+                                            major = inMajor
+                                        }
+                                        viewModel.save(add_course)
+                                        inClassName = ""
+                                        inMajor = ""
+//                                        Toast.makeText(
+//                                            context,
+//                                            "$inClassName $inMajor",
+//                                            Toast.LENGTH_LONG
+//                                        ).show()
                                         openAdd.value = false
                                     },
                                     shape = RoundedCornerShape(30.dp),

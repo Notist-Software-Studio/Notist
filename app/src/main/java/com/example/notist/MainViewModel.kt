@@ -1,47 +1,40 @@
 package com.example.notist
 
 import android.annotation.SuppressLint
-import com.pspdfkit.configuration.activity.PdfActivityConfiguration
-import com.example.notist.PSPDFExample
 import android.app.Application
-import android.content.Context
-import androidx.core.net.toUri
-import androidx.lifecycle.AndroidViewModel
 import android.content.ContentValues
-import android.graphics.Bitmap
-import android.graphics.pdf.PdfRenderer
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.net.Uri
-import android.os.ParcelFileDescriptor
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notist.data.dto.Course
 import com.example.notist.data.dto.Pdf
-import com.example.notist.data.dto.User
+import com.example.notist.data.dto.State
 import com.example.notist.data.service.CourseService
 import com.example.notist.data.service.ICourseService
-import com.example.notist.data.dto.State
-import com.google.android.gms.common.internal.Constants
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.storage.FirebaseStorage
+import com.pspdfkit.configuration.activity.PdfActivityConfiguration
 import com.pspdfkit.document.PdfDocument
 import com.pspdfkit.document.PdfDocumentLoader
 import com.pspdfkit.document.download.DownloadJob
 import com.pspdfkit.document.download.DownloadRequest
 import com.pspdfkit.document.download.source.AssetDownloadSource
+import com.pspdfkit.document.download.source.DownloadSource
+import com.pspdfkit.ui.PdfActivityIntentBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.google.firebase.storage.FirebaseStorage
-import com.pspdfkit.document.download.source.DownloadSource
-import com.pspdfkit.ui.PdfActivityIntentBuilder
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
@@ -54,7 +47,8 @@ import java.net.URLConnection
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import com.pspdfkit.catalog.ui.model.getPdfActivityConfigurationBuilder
+
+
 //import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModel(var courseService: ICourseService = CourseService()) : ViewModel() {
@@ -63,6 +57,7 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
     val pdfs: ArrayList<Pdf> by mutableStateOf(ArrayList<Pdf>())
     val downloadpdfs: MutableLiveData<List<Pdf>> = MutableLiveData<List<Pdf>>()
     var courses: MutableLiveData<List<Course>> = MutableLiveData<List<Course>>()
+    var courses_saved: MutableLiveData<List<Course>> = MutableLiveData<List<Course>>()
     private lateinit var firestore: FirebaseFirestore
     private var storageReference = FirebaseStorage.getInstance().getReference()
     var selectedCourseId by mutableStateOf(String())
@@ -88,6 +83,82 @@ class MainViewModel(var courseService: ICourseService = CourseService()) : ViewM
                 }
         }
 
+    }
+    fun fetchCoursesSaved() {
+        viewModelScope.launch {
+            var courseCollection = firestore.collection("courses_saved")
+            var courseListener =
+                courseCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    querySnapshot?.let { querySnapshot ->
+                        val coursetemp: ArrayList<Course> = ArrayList<Course>()
+                        var documents = querySnapshot.documents
+                        coursetemp.clear()
+                        documents?.forEach {
+                            var course = it.toObject(Course::class.java)
+                            course?.let {
+                                coursetemp.add(it)
+                            }
+                            courses_saved.value = coursetemp
+
+                        }
+                    }
+                }
+        }
+
+    }
+    fun moveFirestoreDocument(fromPath: DocumentReference, toPath: DocumentReference) {
+        fromPath.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document != null) {
+                    toPath.set(document.data!!)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully written!")
+                            fromPath.delete()
+                                .addOnSuccessListener {
+                                    Log.d(
+                                        TAG,
+                                        "DocumentSnapshot successfully deleted!"
+                                    )
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w(
+                                        TAG,
+                                        "Error deleting document",
+                                        e
+                                    )
+                                }
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w(
+                                TAG,
+                                "Error writing document",
+                                e
+                            )
+                        }
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.exception)
+            }
+        }
+    }
+    fun saveCourseMyLibrary(addCourse: Course) {
+        var currentdirectory = firestore.collection("courses").document(selectedCourseId)
+        val document = firestore.collection("courses_saved").document(selectedCourseId)
+        var currentdirectory2 = firestore.collection("courses").document(selectedCourseId).collection("pdfs")
+        val document2 = firestore.collection("courses_saved").document(selectedCourseId).collection("pdfs")
+        moveFirestoreDocument(currentdirectory,document)
+//        moveFirestoreDocument(currentdirectory2,document2)
+
+//        var handle = document.set(addCourse)
+//        handle.addOnSuccessListener {
+//            Log.d("Firebase", "Document Saved")
+//            courses_saved.value = courses_saved.value
+//
+//        }
+//        handle.addOnFailureListener { Log.e("Firebase", "Save failed $it") }
     }
     fun fetchPdfs() {
         pdfs.clear()

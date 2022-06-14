@@ -17,7 +17,7 @@ import com.example.notist.navigation.NavRoutes
 @Composable
 fun bottomNavigation(modifier: Modifier = Modifier, navController: NavController) {
 
-    val navItems = listOf(NavRoutes.Home, NavRoutes.Courses, NavRoutes.MyLibrary, NavRoutes.Shop, NavRoutes.Profile)
+    val navItems = listOf(NavRoutes.Home, NavRoutes.Courses,  NavRoutes.Shop, NavRoutes.Profile)
 
     BottomNavigation(
         backgroundColor = Color(0xFF5C6BC0),

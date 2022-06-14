@@ -43,7 +43,7 @@ import org.koin.core.KoinApplication.Companion.init
 
 
 @Composable
-fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostController,money : MutableState<Int>,viewModel: MainViewModel) {
+fun UploadScreen(modifier: Modifier, incourseId: String,inclass_name: String,inmajor:String, navController: NavHostController,money : MutableState<Int>,viewModel: MainViewModel) {
     val pdfs by viewModel.downloadpdfs.observeAsState(initial = emptyList())
     val context = LocalContext.current
     var isShare = rememberSaveable { mutableStateOf(false)}
@@ -51,10 +51,8 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
         modifier
             .padding(vertical = 16.dp)
     ) {
-        Text(text = courseId)
         var pickedImageUri by remember { mutableStateOf<Uri?>(null) }
-        viewModel.selectedCourseId = courseId
-        viewModel.fetchPdfs()
+        viewModel.selectedCourseId = incourseId
         val launcher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 val cursor = it.data?.data?.let { it1 ->
@@ -72,7 +70,7 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
                 val fileName = nameIndex?.let { it1 -> cursor?.getString(it1) }
                 val size = sizeIndex?.let { it1 -> cursor?.getLong(it1) }
                 pickedImageUri = it.data?.data
-                Toast.makeText(context, pickedImageUri.toString(), Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, pickedImageUri.toString(), Toast.LENGTH_LONG).show()
                 val pdf =
                     fileName?.let { it1 ->
                         Pdf(
@@ -136,6 +134,8 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
             ) {
                 Text("SELECT DOCUMENT", color = Color.White)
             }
+
+
         }
     }
 }
@@ -157,7 +157,7 @@ fun FileBar(
             .width(370.dp)
             .height(60.dp)
             .clickable {
-                       viewModel.downloadPDF(context,remoteUri,filename)
+                viewModel.downloadPDF(context, remoteUri, filename)
             }
         ,
         horizontalAlignment = Alignment.Start,
