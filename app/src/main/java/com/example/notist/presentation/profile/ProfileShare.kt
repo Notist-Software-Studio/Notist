@@ -78,7 +78,8 @@ fun profileshare(isDialogShare: MutableState<Boolean>,money : MutableState<Int>)
                         )
                     )
                     Text(
-                        text = "One of your friends have just joined by",
+                        //text = "One of your friends have just joined by",
+                        text = "Your friends receive your invite to Notist",
                         style = TextStyle(
                             fontSize = 13.sp,
                             fontFamily = FontFamily.SansSerif,
@@ -86,15 +87,15 @@ fun profileshare(isDialogShare: MutableState<Boolean>,money : MutableState<Int>)
                             color = Color(0xFF000000)
                         )
                     )
-                    Text(
-                        text = "your referral code.",
-                        style = TextStyle(
-                            fontSize = 13.sp,
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF000000)
-                        )
-                    )
+//                    Text(
+//                        text = "your referral code.",
+//                        style = TextStyle(
+//                            fontSize = 13.sp,
+//                            fontFamily = FontFamily.SansSerif,
+//                            fontWeight = FontWeight.SemiBold,
+//                            color = Color(0xFF000000)
+//                        )
+//                    )
 
 
                     Spacer(modifier = Modifier.height(40.dp))
