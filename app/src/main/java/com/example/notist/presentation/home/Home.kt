@@ -136,6 +136,67 @@ fun Circle(shape: Shape){
 }
 
 @Composable
+
+// fun Home(Hunger: Int, navController: NavHostController) {
+//     Box(modifier = Modifier.fillMaxSize())
+//     {
+//         Column(
+//             modifier = Modifier.padding(20.dp),
+//             verticalArrangement = Arrangement.Center,
+//             horizontalAlignment = Alignment.Start
+//         ) {
+//             //Spacer(modifier = Modifier.height(0.dp))
+//             hpbox(shape = RoundedCornerShape(20.dp))
+//             Spacer(modifier = Modifier.height(5.dp))
+//             Circle(shape = CircleShape)
+//             Spacer(modifier = Modifier.height(5.dp))
+//             objectives(shape = RoundedCornerShape(30.dp),navController)
+//             Spacer(modifier = Modifier.height(5.dp))
+//             progress(shape = RoundedCornerShape(30.dp),navController)
+//         }
+//     }
+//     Box(modifier = Modifier.fillMaxSize())
+//     {
+//         Column(
+//             modifier = Modifier.padding(100.dp,30.dp),
+//             verticalArrangement = Arrangement.Center,
+//             horizontalAlignment = Alignment.Start
+//         ) {
+//             Spacer(modifier = Modifier.height(5.dp))
+//             Image(
+//                 painter = painterResource(id = R.drawable.panda),
+//                 contentDescription = "",
+//                 modifier = Modifier
+//                     .size(200.dp, 300.dp)
+//             )
+//         }
+//         hpbar(brapa = Hunger)
+//     }
+//     Box(modifier = Modifier.fillMaxSize())
+//     {
+//         Column(
+//             modifier = Modifier.padding(50.dp,0.dp),
+//             verticalArrangement = Arrangement.SpaceBetween,
+//             horizontalAlignment = Alignment.Start
+//         ){
+//             Spacer(modifier = Modifier.height(315.dp))
+//             Text(
+//                 text = "Daily Objectives",
+//                 color = Color.White,
+//                 fontSize = 20.sp,
+//                 fontWeight = FontWeight.ExtraBold
+//             )
+//             Spacer(modifier = Modifier.height(5.dp))
+//             Button(
+//                 onClick = { navController.navigate(NavRoutes.Profile.route)},
+//                 shape = RoundedCornerShape(10.dp),
+//                 colors = ButtonDefaults.buttonColors(
+//                     backgroundColor = Color.White
+//                 ),
+//                 modifier = Modifier
+//                     .width(300.dp)
+//                     .height(50.dp)
+
 fun Home(Hunger: Int, navController: NavHostController,ticks: MutableState<Int>) {
     @DrawableRes var chat : Int = 0
     @DrawableRes var panda : Int = 0
@@ -191,6 +252,25 @@ fun Home(Hunger: Int, navController: NavHostController,ticks: MutableState<Int>)
                         .size(200.dp, 300.dp)
                 )
             }
+//             Spacer(modifier = Modifier.height(10.dp))
+//             Button(
+//                 onClick = {},
+//                 shape = RoundedCornerShape(10.dp),
+//                 colors = ButtonDefaults.buttonColors(
+//                     backgroundColor = Color.White
+//                 ),
+//                 modifier = Modifier
+//                     .width(300.dp)
+//                     .height(50.dp)
+//             ) {
+//                 Text(
+//                     text = "Share a note",
+//                     color = Color.Black,
+//                     fontSize = 12.sp,
+//                     fontWeight = FontWeight.ExtraBold,
+//                     modifier = Modifier.size(190.dp,15.dp)
+//                 )
+//                 Spacer(modifier = Modifier.width(10.dp))
             Spacer(modifier = Modifier.width(50.dp))
             Row(){
                 Spacer(modifier = Modifier.width(200.dp))
@@ -217,6 +297,26 @@ fun Home(Hunger: Int, navController: NavHostController,ticks: MutableState<Int>)
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
+//             }
+//             Spacer(modifier = Modifier.height(20.dp))
+//             Text(
+//                 text = "My Progress",
+//                 color = Color.White,
+//                 fontSize = 20.sp,
+//                 fontWeight = FontWeight.ExtraBold
+//             )
+//             Spacer(modifier = Modifier.height(2.dp))
+//             Button(
+//                 onClick = {},
+//                 shape = RoundedCornerShape(10.dp),
+//                 colors = ButtonDefaults.buttonColors(
+//                     backgroundColor = Color.LightGray
+//                 ),
+//                 modifier = Modifier
+//                     .width(300.dp)
+//                     .height(65.dp)
+//             ) {
+//                 Column() {
                 Spacer(modifier = Modifier.height(7.dp))
                 Button(
                     onClick = { navController.navigate(NavRoutes.Profile.route) },
