@@ -32,7 +32,7 @@ import com.example.notist.ui.theme.Purple500
 fun profileshare(isDialogShare: MutableState<Boolean>,money : MutableState<Int>) {
 
     if (isDialogShare.value) {
-        Dialog(onDismissRequest = { isDialogShare.value = false }) {
+        Dialog(onDismissRequest = { }) {
             Surface(
                 modifier = Modifier
                     .width(400.dp)

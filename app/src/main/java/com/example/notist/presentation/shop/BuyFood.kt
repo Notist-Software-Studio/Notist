@@ -46,7 +46,7 @@ fun BuyFood(
     };
 
     if ((isBuy.value) && (!cannotBuy.value)) {
-        Dialog(onDismissRequest = { isBuy.value = false }) {
+        Dialog(onDismissRequest = {  }) {
             Surface(
                 modifier = Modifier
                     .width(300.dp)

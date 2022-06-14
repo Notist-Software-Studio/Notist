@@ -100,12 +100,12 @@ fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel,hunger : 
                         modifier = Modifier,
                         courseId = courseId,
                         navController = navController,
-                        viewModel = MainViewModel(),)}
+                        viewModel = MainViewModel(),money = money)}
                 composable(NavRoutes.OpenPdf.route) { OpenPdf(pdfResId = R.raw.sample) }
                 composable(NavRoutes.PdfList.route) { pdfList(
                         pdfViewModel = pdfViewModel,
-                        navController = navController
-                    ) }
+                        navController = navController,
+                    )}
             }
         }
     }

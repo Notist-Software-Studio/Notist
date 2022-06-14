@@ -33,7 +33,7 @@ import com.example.notist.ui.theme.Purple500
 fun profileenter(isDialogEnter: MutableState<Boolean>,money : MutableState<Int>) {
 
     if (isDialogEnter.value) {
-        Dialog(onDismissRequest = { isDialogEnter.value = false }) {
+        Dialog(onDismissRequest = {  }) {
             Surface(
                 modifier = Modifier
                     .width(400.dp)
