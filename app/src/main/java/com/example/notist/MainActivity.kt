@@ -1,13 +1,16 @@
 package com.example.notist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.notist.presentation.courses.AlignCourseBar
@@ -78,6 +81,8 @@ fun timer(
     }
     Text(text = "${ticks.value}")
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

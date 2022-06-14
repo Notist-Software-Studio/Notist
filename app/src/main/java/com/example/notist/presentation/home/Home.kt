@@ -251,7 +251,7 @@ fun Home(Hunger: Int, navController: NavHostController,ticks: MutableState<Int>)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate(NavRoutes.Courses.route)},
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.White

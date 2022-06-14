@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +37,16 @@ import com.example.notist.R
 import com.example.notist.data.dto.Course
 import com.example.notist.data.dto.Pdf
 import com.example.notist.presentation.PDF.DocumentDownloadExample
+import com.example.notist.presentation.profile.ShareNote
+import com.example.notist.presentation.profile.profileenter
 import org.koin.core.KoinApplication.Companion.init
 
 
 @Composable
-fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostController,viewModel: MainViewModel) {
+fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostController,money : MutableState<Int>,viewModel: MainViewModel) {
     val pdfs by viewModel.downloadpdfs.observeAsState(initial = emptyList())
     val context = LocalContext.current
+    var isShare = rememberSaveable { mutableStateOf(false)}
     Column(
         modifier
             .padding(vertical = 16.dp)
@@ -80,9 +84,11 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
                     viewModel.pdfs.add(pdf)
                     if(viewModel.pdfs.isNotEmpty()){
                         viewModel.uploadPDF()
+                        isShare.value = true
                     }
                 }
             }
+        ShareNote(isShare,money)
 //        Button(
 //            modifier = Modifier
 //                .padding(30.dp)
