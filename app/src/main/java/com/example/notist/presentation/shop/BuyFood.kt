@@ -46,7 +46,7 @@ fun BuyFood(
     };
 
     if ((isBuy.value) && (!cannotBuy.value)) {
-        Dialog(onDismissRequest = { isBuy.value = false }) {
+        Dialog(onDismissRequest = {  }) {
             Surface(
                 modifier = Modifier
                     .width(300.dp)
@@ -157,7 +157,7 @@ fun BuyFood(
                         Text(
                             text = "YES",
                             fontWeight = FontWeight.ExtraBold,
-                            color = Color(0xB85C6BC0),
+                            color = Color(0xFF5C6BC0),
                             fontSize = 20.sp
                         )
                     }

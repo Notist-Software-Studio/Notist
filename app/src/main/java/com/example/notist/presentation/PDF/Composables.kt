@@ -8,9 +8,11 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -74,10 +76,14 @@ fun PdfList(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(24.dp)
                 ) {
-                    Button(onClick = { viewModel.loadPdfs() }) {
+                    Button(onClick = { viewModel.loadPdfs() },
+                            colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFF5C6BC0)
+                            )) {
                         Text(
-                            text = "load PDFs",
-                            textAlign = TextAlign.Center
+                            text = "lOAD PDF",
+                            textAlign = TextAlign.Center,
+                            color = Color.White
                         )
                     }
                 }

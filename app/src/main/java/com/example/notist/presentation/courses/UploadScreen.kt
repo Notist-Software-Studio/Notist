@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +37,16 @@ import com.example.notist.R
 import com.example.notist.data.dto.Course
 import com.example.notist.data.dto.Pdf
 import com.example.notist.presentation.PDF.DocumentDownloadExample
+import com.example.notist.presentation.profile.ShareNote
+import com.example.notist.presentation.profile.profileenter
 import org.koin.core.KoinApplication.Companion.init
 
 
 @Composable
-fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostController,viewModel: MainViewModel) {
+fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostController,money : MutableState<Int>,viewModel: MainViewModel) {
     val pdfs by viewModel.downloadpdfs.observeAsState(initial = emptyList())
     val context = LocalContext.current
+    var isShare = rememberSaveable { mutableStateOf(false)}
     Column(
         modifier
             .padding(vertical = 16.dp)
@@ -80,26 +84,59 @@ fun UploadScreen(modifier: Modifier, courseId: String, navController: NavHostCon
                     viewModel.pdfs.add(pdf)
                     if(viewModel.pdfs.isNotEmpty()){
                         viewModel.uploadPDF()
+                        isShare.value = true
                     }
                 }
             }
-        Button(
-            onClick = {
-                val intent = Intent(
-                    Intent.ACTION_OPEN_DOCUMENT,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                )
-                    .apply {
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                    }
-                launcher.launch(intent)
+        ShareNote(isShare,money)
+//        Button(
+//            modifier = Modifier
+//                .padding(30.dp)
+//                .align(Alignment.BottomCenter),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = Color(0xFF5C6BC0)
+//            ),
+//            onClick = {
+//                val intent = Intent(
+//                    Intent.ACTION_OPEN_DOCUMENT,
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+//                )
+//                    .apply {
+//                        addCategory(Intent.CATEGORY_OPENABLE)
+//                    }
+//                launcher.launch(intent)
+//
+//            }
+//        ) {
+//            Text("Select Document",color = Color.White)
+//        }
+//        AlignFileBar(modifier = Modifier, data = pdfs, navController)
+        Box(modifier = Modifier.fillMaxSize()) {
+            AlignFileBar(modifier = Modifier, data = pdfs, navController)
+            Button(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .height(50.dp)
+                    .align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF5C6BC0)
+                ),
+                shape = RoundedCornerShape(20.dp),
+                onClick = {
+                    val intent = Intent(
+                        Intent.ACTION_OPEN_DOCUMENT,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    )
+                        .apply {
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                        }
+                    launcher.launch(intent)
 
+                }
+            ) {
+                Text("SELECT DOCUMENT", color = Color.White)
             }
-        ) {
-            Text("Select")
         }
-        AlignFileBar(modifier = Modifier, data = pdfs, navController)
-
     }
 }
 
@@ -116,13 +153,15 @@ fun FileBar(
     val state by viewModel.state.collectAsState(State())
     Column(
         modifier = modifier
-            .background(colorResource(id = R.color.light_blue), shape = RoundedCornerShape(10.dp))
+            .background(color = Color(0xFFC0C8D7), shape = RoundedCornerShape(10.dp))
             .width(370.dp)
+            .height(60.dp)
             .clickable {
                        viewModel.downloadPDF(context,remoteUri,filename)
             }
         ,
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = filename,

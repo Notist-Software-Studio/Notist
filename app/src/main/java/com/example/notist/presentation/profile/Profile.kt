@@ -1,16 +1,19 @@
 package com.example.notist.presentation.profile
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -265,8 +268,19 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController,money : MutableSt
                 Spacer(modifier = Modifier.height(15.dp))
                 val isDialogShare = remember { mutableStateOf(false)}
                 profileshare(isDialogShare,money)
+
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                val context = LocalContext.current
+
                 Button(
-                    onClick = {isDialogShare.value = true},
+                    onClick = {
+                        //isDialogShare.value = true
+                        context.startActivity(shareIntent)},
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .width(200.dp)
@@ -312,7 +326,7 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController,money : MutableSt
                         .height(35.dp)
                         .padding(vertical = 0.dp, horizontal = 30.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFC0C8D7),
+                        backgroundColor = Color(0xFF5C6BC0),
                     )
 
                     //.padding(vertical = 12.dp, horizontal = 20.dp)
@@ -327,6 +341,8 @@ fun ScaffoldWithTopBarProfile(navController: NavHostController,money : MutableSt
             }
         })
 }
+
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview9() {
