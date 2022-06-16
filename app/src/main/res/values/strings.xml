@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Notist</string>
+    <string name="login_page">LoginPage</string>
+    <string name="bottom_navigation_home">Home</string>
+    <string name="bottom_navigation_courses">Courses</string>
+    <string name="bottom_navigation_myLibrary">MyLibrary</string>
+    <string name="bottom_navigation_shop">Shop</string>
+    <string name="bottom_navigation_profile">Profile</string>
+    <string name="placeholder_search_for_courses">Search For Courses</string>
+    <string name="introduction_to_programming_1">Introduction to Programming 1</string>
+    <string name="introduction_to_programming_2">Introduction to Programming 2</string>
+    <string name="linear_algebra">Linear Algebra</string>
+    <string name="electronics">Electronics</string>
+    <string name="cs">CS</string>
+    <string name="ee">EE</string>
+    <string name="eecs">EECS</string>
+    <string name="all">All</string>
+    <string name="openPdf">OpenPdf</string>
+    <string name="pdfList">PdfList</string>
+    <string name="five">5</string>
+    <string name="ten">10</string>
+    <string name="fifteen">15</string>
+    <string name="twenty">20</string>
 </resources>

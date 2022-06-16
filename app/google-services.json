@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "884031921294",
+    "firebase_url": "https://notist-2d957-default-rtdb.firebaseio.com",
+    "project_id": "notist-2d957",
+    "storage_bucket": "notist-2d957.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884031921294:android:12abe76e98cca04ad47ddf",
+        "android_client_info": {
+          "package_name": "com.example.notist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884031921294-lpm2gkk9ot5rns2vf4ct42h471ppvvl0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.notist",
+            "certificate_hash": "4ea4ee925e0639e9cd3c8b6c0fde6931a25f40ad"
+          }
+        },
+        {
+          "client_id": "884031921294-vhjpgqmvggapmldmun96qob9td35qtlp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM02vkNllw9QsFe4UJ8zD5_gi2RBcB0sc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884031921294-vhjpgqmvggapmldmun96qob9td35qtlp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
