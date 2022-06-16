@@ -79,7 +79,7 @@ fun timer(
             }
         }
     }
-    Text(text = "${ticks.value}")
+    //Text(text = "${ticks.value}")
 }
 
 

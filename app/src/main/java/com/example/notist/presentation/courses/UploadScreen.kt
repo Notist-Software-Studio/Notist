@@ -53,6 +53,7 @@ fun UploadScreen(modifier: Modifier, incourseId: String,inclass_name: String,inm
     ) {
         var pickedImageUri by remember { mutableStateOf<Uri?>(null) }
         viewModel.selectedCourseId = incourseId
+        viewModel.fetchPdfs()
         val launcher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 val cursor = it.data?.data?.let { it1 ->

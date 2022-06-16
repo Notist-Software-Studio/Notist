@@ -38,7 +38,7 @@ import kotlin.time.ExperimentalTime
 
 @Composable
 fun LoginPage(viewModel: MainViewModel, pdfViewModel: PDFMainViewModel,hunger : MutableState<Int>,ticks: MutableState<Int>) {
-    var money = rememberSaveable { mutableStateOf(50) }
+    var money = rememberSaveable { mutableStateOf(0) }
     //val vm by remember { mutableStateOf(UserViewModel()) }
     val navController = rememberNavController()
     var showTopBar by rememberSaveable { mutableStateOf(true) }
